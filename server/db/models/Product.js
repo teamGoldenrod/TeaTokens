@@ -19,10 +19,10 @@ const Product = db.define("product", {
   },
   imageUrl: {
     type: Sequelize.STRING,
-    allowNull: false,
-    validate: {
-      notEmpty: true,
-    },
+    // allowNull: false,
+    // validate: {
+    //   notEmpty: true,
+    // },
   },
   description: { type: Sequelize.TEXT },
 });
