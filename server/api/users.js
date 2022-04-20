@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const {
-  models: { User, Order },
+  models: { User, Order, Product },
 } = require("../db");
 const isAdminHelper = require("./isAdminHelper");
 
@@ -27,9 +27,24 @@ router.get("/:id", isAdminHelper, async (req, res, next) => {
   try {
     const user = await User.findByPk(req.params.id, { include: Order });
     if (!user) {
-      err.status(404).send("User does not exist");
+      res.status(404).send("User does not exist");
     }
     res.json(user);
+  } catch (err) {
+    next(err);
+  }
+});
+
+// GET /api/users/userId/cart
+router.get("/:id/cart", async (req, res, next) => {
+  try {
+    const user = await User.findByPk(req.params.id, {
+      include: [
+        { model: Order, where: { isCart: true }, include: { model: Product } },
+      ],
+    });
+    if (!user) res.status(404).send("User does not exist");
+    res.status(200).json(user);
   } catch (err) {
     next(err);
   }

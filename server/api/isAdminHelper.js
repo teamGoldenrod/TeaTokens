@@ -3,8 +3,8 @@ const isAdminHelper = (req, res, next) => {
     next();
   } else {
     const err = new Error("Access denied - you are not an admin");
-    error.status = 404;
-    next(error);
+    err.status = 404;
+    next(err);
   }
 };
 
