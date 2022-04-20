@@ -172,9 +172,9 @@ async function seed() {
     Order.create({ isCart: false }),
     Order.create({ isCart: false }),
   ]);
-
+  // generate random products
   const giveMeRandomProducts = () => {
-    const randomNum = () => Math.floor(Math.random() * products.length);
+    const randomNum = () => Math.floor(Math.random() * (products.length - 10));
     let counter = 0;
     let idxAdded = {};
     while (counter < randomNum() + 1) {
