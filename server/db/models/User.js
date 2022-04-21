@@ -16,6 +16,17 @@ const User = db.define("user", {
     type: Sequelize.STRING,
     allowNull: false,
   },
+  passwordConfirm: {
+    type: Sequelize.STRING,
+    validate: {
+      isEqualWithPassword(value) {
+        if (value !== this.password)
+          throw new Error(
+            "Your password does not match the confirmed password."
+          );
+      },
+    },
+  },
   email: {
     type: Sequelize.STRING,
     allowNull: false,
@@ -65,11 +76,17 @@ User.authenticate = async function ({ username, password }) {
 User.findByToken = async function (token) {
   try {
     const { id } = await jwt.verify(token, process.env.JWT);
-    const user = User.findByPk(id);
+    const user = await User.findByPk(id);
     if (!user) {
       throw "nooo";
     }
-    return user;
+    return {
+      id: user.id,
+      email: user.email,
+      username: user.username,
+      role: user.role,
+      imageUrl: user.imageUrl,
+    };
   } catch (ex) {
     const error = Error("bad token");
     error.status = 401;
@@ -87,6 +104,17 @@ const hashPassword = async (user) => {
   }
 };
 
-User.beforeCreate(hashPassword);
+User.beforeCreate(async (user) => {
+  user.passwordConfirm = undefined;
+  await hashPassword(user);
+});
 User.beforeUpdate(hashPassword);
-User.beforeBulkCreate((users) => Promise.all(users.map(hashPassword)));
+
+User.beforeBulkCreate((users) =>
+  Promise.all(
+    users.map((user) => {
+      user.passwordConfirm = undefined;
+      hashPassword(user);
+    })
+  )
+);

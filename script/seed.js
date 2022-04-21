@@ -18,51 +18,61 @@ async function seed() {
     User.create({
       username: "cody",
       password: "123",
+      passwordConfirm: "123",
       email: "lalalala@lala.com",
     }),
     User.create({
       username: "murphy",
       password: "123",
+      passwordConfirm: "123",
       email: "yoyo@yahoo.com",
     }),
     User.create({
       username: "zack",
       password: "123",
+      passwordConfirm: "123",
       email: "zack@yahoo.com",
     }),
     User.create({
       username: "moseby",
       password: "123",
+      passwordConfirm: "123",
       email: "moseby@yahoo.com",
     }),
     User.create({
       username: "ashley",
       password: "123",
+      passwordConfirm: "123",
       email: "ashley@yahoo.com",
     }),
     User.create({
       username: "cool",
       password: "123",
+      passwordConfirm: "123",
       email: "coolstuff@yahoo.com",
     }),
     User.create({
       username: "awesome",
       password: "123",
+      passwordConfirm: "123",
       email: "awesome@yahoo.com",
     }),
     User.create({
       username: "peter",
       password: "123",
+      passwordConfirm: "123",
       email: "peter@yahoo.com",
     }),
     User.create({
       username: "parker",
       password: "123",
+      passwordConfirm: "123",
       email: "parker@yahoo.com",
     }),
     User.create({
       username: "eddie",
       password: "123",
+      passwordConfirm: "123",
       email: "brock@yahoo.com",
     }),
   ]);
