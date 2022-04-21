@@ -1,9 +1,9 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
 
-const CartItem = props => {
+const Cartproducts= props => {
   const product = props.current.product
-  const amountArr = [1]
+  const amountArr = [0,1]
   function remove(evt) {
     evt.preventDefault()
     props.remove(props.current.id || props.current.orderId, product.id)
@@ -22,7 +22,6 @@ const CartItem = props => {
       <Link to={`/products/${product.id}`}>
         <h3>{product.name}</h3>
       </Link>
-      <p>{product.origin}</p>
       <p>{product.price / 100} USD</p>
       <select value={props.current.amount} onChange={evt => qtySelector(evt)}>
         {amountArr.map((option, idx) => {
