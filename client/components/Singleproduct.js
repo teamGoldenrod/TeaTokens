@@ -36,7 +36,6 @@ class SingleProduct extends React.Component {
 
         <div className="single-product-page-info">
           <h3>{product.name}</h3>
-          <p>{product.origin}</p>
           <p>{product.description}</p>
           <p>{product.price / 100} USD</p>
           {product.quantity > 0 ? (
