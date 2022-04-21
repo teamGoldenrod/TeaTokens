@@ -2,10 +2,13 @@ import React from 'react'
 import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
 
+
 /**
  * COMPONENT
  */
+
 export const Home = props => {
+  const { username } = props;
   const products = props.products.allProducts
   const featured = []
   const map = {}
@@ -16,6 +19,7 @@ export const Home = props => {
     }
     map[random] = random
   }
+
   return (
     <div className="home_page">
       <div className="center_container">
@@ -61,17 +65,20 @@ export const Home = props => {
         })}
       </div>
     </div>
-  )
-}
+  );
+};
 
 /**
  * CONTAINER
  */
-const mapState = state => {
+const mapState = (state) => {
   return {
     username: state.auth.username,
-    products: state.products
-  }
-}
+     products: state.products
 
-export default connect(mapState)(Home)
+  };
+};
+
+
+
+export default connect(mapState)(Home);
