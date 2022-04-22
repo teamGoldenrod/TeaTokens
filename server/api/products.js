@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const { isAdminHelper, getUserHelper } = require("./utils");
 const {
-  models: { Product, Order },
+  models: { Product },
 } = require("../db");
 module.exports = router;
 
@@ -9,7 +9,7 @@ module.exports = router;
 router.get("/", async (req, res, next) => {
   try {
     const products = await Product.findAll({
-      attributes: ["id", "name", "price"],
+      attributes: ["id", "name", "price", "imageUrl"],
     });
     res.json(products);
   } catch (err) {
