@@ -8,7 +8,9 @@ module.exports = router;
 // GET /api/products
 router.get("/", async (req, res, next) => {
   try {
-    const products = await Product.findAll();
+    const products = await Product.findAll({
+      attributes: ["id", "name", "price"],
+    });
     res.json(products);
   } catch (err) {
     next(err);
@@ -18,7 +20,7 @@ router.get("/", async (req, res, next) => {
 // GET /api/products/:productid
 router.get("/:id", async (req, res, next) => {
   try {
-    const product = await Product.findByPk(req.params.id, { include: Order });
+    const product = await Product.findByPk(req.params.id);
 
     if (!product) {
       res.status(404).send("Product does not exist");
@@ -57,7 +59,7 @@ router.put("/:id", async (req, res, next) => {
 router.delete("/:id", async (req, res, next) => {
   try {
     await Product.destroy({ where: { id: req.params.id } });
-    res.status(204);
+    res.status(204).json({ status: "success" });
   } catch (err) {
     next(err);
   }
