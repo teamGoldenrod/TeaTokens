@@ -172,7 +172,7 @@ async function seed() {
       price: 2.99,
     }),
   ]);
-
+  /*
   const orders = await Promise.all([
     Order.create({ isCart: true }),
     Order.create({ isCart: true }),
@@ -186,6 +186,7 @@ async function seed() {
     Order.create({ isCart: false }),
     Order.create({ isCart: false }),
   ]);
+  */
   // generate random products
   // const giveMeRandomProducts = () => {
   //   const randomNum = () => Math.floor(Math.random() * (products.length - 10));

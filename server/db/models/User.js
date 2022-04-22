@@ -2,6 +2,7 @@ const Sequelize = require("sequelize");
 const db = require("../db");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+const Order = require("./Order");
 const axios = require("axios");
 
 const SALT_ROUNDS = 5;
@@ -110,6 +111,14 @@ User.beforeCreate(async (user) => {
   user.passwordConfirm = undefined;
   await hashPassword(user);
 });
+// User.afterCreate(async (user) => {
+//   try {
+//     const order = await Order.create({ isCart: true });
+//     await user.addOrder(order);
+//   } catch (err) {
+//     throw new Error("Something went wrong");
+//   }
+// });
 User.beforeUpdate(hashPassword);
 
 User.beforeBulkCreate((users) =>
