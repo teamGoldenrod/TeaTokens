@@ -4,21 +4,6 @@ const {
 } = require("../db");
 const { getUserHelper } = require("./utils");
 
-// GET / api / users / userId / cart;
-router.get("/:id/cart", async (req, res, next) => {
-  try {
-    const user = await User.findByPk(req.params.id, {
-      include: [
-        { model: Order, where: { isCart: true }, include: { model: Product } },
-      ],
-    });
-    if (!user) res.status(404).send("User does not exist");
-    res.status(200).json(user);
-  } catch (err) {
-    next(err);
-  }
-});
-
 router.use(getUserHelper);
 /**
   req.body
@@ -26,21 +11,6 @@ router.use(getUserHelper);
     prodId
   }
 */
-router.post("/", async (req, res, next) => {
-  try {
-    const product = await Product.findByPk(req.body.prodId);
-    const newOrder = await Order.create({ isCart: true, userId: req.user.id });
-    await OrderProduct.update(
-      { totalPrice: product.price, numItems: 1 },
-      { where: { orderId: newOrder.id } }
-    );
-    await newOrder.addProduct(product);
-    res.status(201).json(newOrder);
-  } catch (err) {
-    next(err);
-  }
-});
-
 router.get("/:orderId", async (req, res, next) => {
   try {
     const order = await Order.findByPk(req.params.orderId, {

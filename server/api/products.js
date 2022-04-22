@@ -41,5 +41,24 @@ router.post("/", async (req, res, next) => {
 });
 
 //PUT -> needs to be admin
+router.put("/:id", async (req, res, next) => {
+  try {
+    const editProduct = await Product.update(req.body, {
+      where: { id: req.params.id },
+      returning: true,
+    });
+    res.json(editProduct);
+  } catch (err) {
+    next(err);
+  }
+});
 
 //DELETE -> needs to be admin
+router.delete("/:id", async (req, res, next) => {
+  try {
+    await Product.destroy({ where: { id: req.params.id } });
+    res.status(204);
+  } catch (err) {
+    next(err);
+  }
+});

@@ -18,9 +18,9 @@ const User = db.define("user", {
   },
   passwordConfirm: {
     type: Sequelize.STRING,
-    allowNull: false,
     validate: {
       isEqualWithPassword(value) {
+        if (!value) throw new Error("Please confirm your password");
         if (value !== this.password)
           throw new Error(
             "Your password does not match the confirmed password."
