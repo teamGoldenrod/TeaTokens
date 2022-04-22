@@ -2,7 +2,7 @@
 
 const {
   db,
-  models: { User, Product, Order, Orders_Products },
+  models: { User, Product, Order, OrderProduct },
 } = require("../server/db");
 
 /**
@@ -14,6 +14,7 @@ async function seed() {
   console.log("db synced!");
 
   // Creating Users
+
   const users = await Promise.all([
     User.create({
       username: "cody",
@@ -74,6 +75,18 @@ async function seed() {
       password: "123",
       passwordConfirm: "123",
       email: "brock@yahoo.com",
+    }),
+    User.create({
+      username: "bla bla",
+      password: "123",
+      passwordConfirm: "123",
+      email: "blabla@yahoo.com",
+    }),
+    User.create({
+      username: "hi bla",
+      password: "123",
+      passwordConfirm: "123",
+      email: "hibla@yahoo.com",
     }),
   ]);
 
@@ -172,16 +185,8 @@ async function seed() {
     Order.create({ isCart: false }),
     Order.create({ isCart: false }),
     Order.create({ isCart: false }),
-    Order.create({ isCart: false }),
-    Order.create({ isCart: false }),
-    Order.create({ isCart: false }),
-    Order.create({ isCart: false }),
-    Order.create({ isCart: false }),
-    Order.create({ isCart: false }),
-    Order.create({ isCart: false }),
-    Order.create({ isCart: false }),
-    Order.create({ isCart: false }),
   ]);
+
   // generate random products
   const giveMeRandomProducts = () => {
     const randomNum = () => Math.floor(Math.random() * (products.length - 10));
@@ -199,28 +204,16 @@ async function seed() {
   for (let i = 0; i < orders.length; i++) {
     const randProducts = giveMeRandomProducts();
     for (let j = 0; j < randProducts.length; j++) {
-      await orders[i].addProduct(randProducts[j]);
-      await Orders_Products.update(
-        { numItems: 1, totalPrice: randProducts[j].price },
-        {
-          where: { orderId: orders[i].id, productId: randProducts[j].id },
-        }
-      );
+      await users[i].addOrder(orders[i]);
+      await orders[i].addProduct(randProducts[j], {
+        through: {
+          numItems: 1,
+          totalPrice: randProducts[j].price,
+          userId: users[i].id,
+        },
+      });
     }
   }
-
-  await users[0].addOrder(orders[0]);
-  await users[1].addOrder(orders[1]);
-  await users[2].addOrder(orders[2]);
-  await users[3].addOrder(orders[3]);
-  await users[4].addOrder(orders[4]);
-
-  await users[0].addOrders([orders[5], orders[6], orders[7]]);
-  await users[5].addOrders([orders[8], orders[9], orders[10]]);
-  await users[1].addOrders([orders[11], orders[12], orders[13]]);
-  await users[2].addOrders([orders[14], orders[15]]);
-  await users[7].addOrders([orders[16], orders[17]]);
-  await users[8].addOrders([orders[18], orders[19]]);
 
   console.log(`seeded ${users.length} users`);
   console.log(`seeded successfully`);

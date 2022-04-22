@@ -1,44 +1,99 @@
-const router = require('express').Router()
-import { Order, Product, User, Order_Products } from '../db/models'
+const Sequelize = require("sequelize");
+const router = require("express").Router();
+const {
+  models: { Order, Product, OrderProduct, User },
+} = require("../db");
+const { getUserHelper } = require("./utils");
 
-router.get('/:orderId', async (req, res, next) => {
-  try {
-    const order = await Order.findByPk(req.params.orderId, {
-      include: [{model: Order_Products, include: [Product]}]
-    })
-    res.json(order)
-  } catch (err) {
-    next(err)
+router.use(getUserHelper);
+/**
+  req.body
+  {
+    prodId
   }
-})
-
-router.post('/', async (req, res, next) => {
+*/
+//When user adds a product to cart, it creates or finds the order that has isCart true
+//and adds the product there
+router.post("/", async (req, res, next) => {
   try {
-    const newOrder = await Order.create(req.body, {
-      include: {
-        model: Order_Products
+    const { user } = req;
+    const product = await Product.findByPk(req.body.prodId);
+    if (!product) throw new Error("Product does not exist");
+    const [order] = await Order.findOrCreate({
+      where: { userId: user.id, isCart: true },
+      include: { model: Product },
+      defaults: {
+        userId: user.id,
+        isCart: true,
+      },
+    });
+    await order.addProduct(product, {
+      through: { numItems: 1, totalPrice: product.price, userId: user.id },
+    });
+    res.status(201).json({ order, addedProduct: product });
+  } catch (err) {
+    next(err);
+  }
+});
+//Get all orders
+router.get("/", async (req, res, next) => {
+  try {
+    const orders = await Order.findAll({
+      where: { userId: req.user.id, isCart: false },
+      include: [{ model: Product }],
+    });
+    await res.status(200).json(orders);
+  } catch (err) {
+    next(err);
+  }
+});
+
+//Get cart
+router.get("/cart", async (req, res, next) => {
+  try {
+    const cart = await OrderProduct.findAll({
+      where: { userId: req.user.id },
+      include: [{ model: Product }, { model: Order, where: { isCart: true } }],
+    });
+    await res.status(200).json(cart);
+  } catch (err) {
+    next(err);
+  }
+});
+
+//Update cart
+router.put("/cart/:id", async (req, res, next) => {
+  try {
+    const [_, editCart] = await OrderProduct.update(
+      {
+        numItems: req.body.numItems,
+        totalPrice: req.body.totalPrice,
+      },
+      {
+        where: { id: req.params.id, userId: req.user.id },
+        include: { model: Order, where: { isCart: true } },
+        returning: true,
       }
-    })
-    res.status(201).send(newOrder)
+    );
+    res.status(200).json(editCart);
   } catch (err) {
-    next(err)
+    next(err);
   }
-})
+});
 
-router.post('/checkout/:orderId', async (req, res, next) => {
+//Delete cart item
+router.delete("/cart/:id", async (req, res, next) => {
   try {
-    const order = await Order.findByPk(req.params.orderId)
-    order.update({
-      complete: true,
-      total: req.body.total
-    })
-    const newOrder = await Order.create({
-      userId: order.userId
-    })
-    res.json(order)
-  } catch (error) {
-    next(error)
+    const orderProduct = await OrderProduct.findOne({
+      where: { id: req.params.id, userId: req.user.id },
+      include: { model: Order, where: { isCart: true } },
+    });
+    if (!orderProduct) throw new Error("Could not delete this product");
+    await orderProduct.destroy();
+    res.status(204).json({ status: "success" });
+  } catch (err) {
+    next(err);
   }
-})
+});
 
-module.exports = router
+module.exports = router;

@@ -2,13 +2,14 @@ const router = require("express").Router();
 const {
   models: { User, Order, Product },
 } = require("../db");
-const isAdminHelper = require("./isAdminHelper");
+const { isAdminHelper, getUserHelper } = require("./utils");
 
 module.exports = router;
 
 // GET /api/users
 // all users (admin only)
-router.get("/", isAdminHelper, async (req, res, next) => {
+router.use(getUserHelper, isAdminHelper);
+router.get("/", async (req, res, next) => {
   try {
     const users = await User.findAll({
       // explicitly select only the id and username fields - even though
@@ -23,26 +24,15 @@ router.get("/", isAdminHelper, async (req, res, next) => {
 });
 
 // GET /api/users/userId
-router.get("/:id", isAdminHelper, async (req, res, next) => {
+router.get("/:id", async (req, res, next) => {
   try {
-    const user = await User.findByPk(req.params.id, { include: Order });
+    const user = await User.findByPk(req.params.id, {
+      attributes: ["id", "username", "email", "imageUrl", "role"],
+      include: { model: Order, include: Product },
+    });
     if (!user) {
       res.status(404).send("User does not exist");
     }
-    res.json(user);
-  } catch (err) {
-    next(err);
-  }
-});
-// GET /api/users/userId/cart
-router.get("/:id/cart", async (req, res, next) => {
-  try {
-    const user = await User.findByPk(req.params.id, {
-      include: [
-        { model: Order, where: { isCart: true }, include: { model: Product } },
-      ],
-    });
-    if (!user) res.status(404).send("User does not exist");
     res.status(200).json(user);
   } catch (err) {
     next(err);
@@ -50,15 +40,14 @@ router.get("/:id/cart", async (req, res, next) => {
 });
 
 // POST /api/users
-router.post("/"),
-  async (req, res, next) => {
-    try {
-      const addUser = await User.create(req.body);
-      res.json(addUser);
-    } catch (err) {
-      next(err);
-    }
-  };
+router.post("/", async (req, res, next) => {
+  try {
+    const addUser = await User.create(req.body);
+    res.status(201).json(addUser);
+  } catch (err) {
+    next(err);
+  }
+});
 
 // PUT /api/users/:userId
 router.put("/:id", async (req, res, next) => {
@@ -69,20 +58,21 @@ router.put("/:id", async (req, res, next) => {
       },
       returning: true,
     });
-    res.json(user);
+    res.status(200).json(user);
   } catch (err) {
     next(err);
   }
 });
 
 // DELETE /api/users/:userId
-router.delete(":/id", async (req, res, next) => {
+router.delete("/:id", async (req, res, next) => {
   try {
     await User.destroy({
       where: {
         id: req.params.id,
       },
     });
+    res.status(204).json({ status: "success" });
   } catch (err) {
     next(err);
   }
