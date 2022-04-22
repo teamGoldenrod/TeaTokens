@@ -81,5 +81,12 @@ const mapState = (state) => {
     products: state.products,
   };
 };
+const mapDispatch = dispatch => {
+  return {
+    getProducts: () => dispatch(fetchAllProducts()),
 
-export default connect(mapState)(Home);
+  }
+}
+
+
+export default connect(mapState,mapDispatch)(Home);
