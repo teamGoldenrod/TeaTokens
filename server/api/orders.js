@@ -1,4 +1,3 @@
-const Sequelize = require("sequelize");
 const router = require("express").Router();
 const {
   models: { Order, Product, OrderProduct, User },
@@ -56,6 +55,19 @@ router.get("/cart", async (req, res, next) => {
       include: [{ model: Product }, { model: Order, where: { isCart: true } }],
     });
     await res.status(200).json(cart);
+  } catch (err) {
+    next(err);
+  }
+});
+
+//Buy Order (Cart) / Checkout
+router.put("/:id", async (req, res, next) => {
+  try {
+    const [_, boughtOrder] = await Order.update(
+      { isCart: false },
+      { where: { id: req.params.id, userId: req.user.id }, returning: true }
+    );
+    res.status(200).json(boughtOrder);
   } catch (err) {
     next(err);
   }
