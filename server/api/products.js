@@ -1,4 +1,5 @@
 const router = require("express").Router();
+const { isAdminHelper, getUserHelper } = require("./utils");
 const {
   models: { Product, Order },
 } = require("../db");
@@ -20,7 +21,7 @@ router.get("/:id", async (req, res, next) => {
     const product = await Product.findByPk(req.params.id, { include: Order });
 
     if (!product) {
-      err.status(404).send("Product does not exist");
+      res.status(404).send("Product does not exist");
     }
     res.json(product);
   } catch (err) {
@@ -28,7 +29,8 @@ router.get("/:id", async (req, res, next) => {
   }
 });
 
-// POST /api/products
+router.use(getUserHelper, isAdminHelper);
+// POST /api/products -> needs to be admin
 router.post("/", async (req, res, next) => {
   try {
     const addProduct = await Product.create(req.body);
@@ -37,3 +39,7 @@ router.post("/", async (req, res, next) => {
     next(err);
   }
 });
+
+//PUT -> needs to be admin
+
+//DELETE -> needs to be admin

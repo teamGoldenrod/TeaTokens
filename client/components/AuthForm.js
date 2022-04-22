@@ -82,7 +82,7 @@ const mapDispatch = (dispatch) => {
         password: evt.target.password.value,
       };
       if (userInfo.formName === "signup") {
-        userInfo.confirmPassword = evt.target.confirmPassword.value;
+        userInfo.passwordConfirm = evt.target.confirmPassword.value;
         userInfo.email = evt.target.email.value;
       }
       dispatch(authenticate(userInfo));

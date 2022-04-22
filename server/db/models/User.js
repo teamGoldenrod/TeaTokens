@@ -18,6 +18,7 @@ const User = db.define("user", {
   },
   passwordConfirm: {
     type: Sequelize.STRING,
+    allowNull: false,
     validate: {
       isEqualWithPassword(value) {
         if (value !== this.password)

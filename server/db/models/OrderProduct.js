@@ -1,7 +1,7 @@
 const Sequelize = require("sequelize");
 const db = require("../db");
 
-const Orders_Products = db.define("orders_products", {
+const OrderProduct = db.define("order_product", {
   numItems: {
     type: Sequelize.INTEGER,
     validate: {
@@ -14,4 +14,4 @@ const Orders_Products = db.define("orders_products", {
   },
 });
 
-module.exports = Orders_Products;
+module.exports = OrderProduct;
