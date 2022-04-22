@@ -1,59 +1,59 @@
-import axios from 'axios'
+import axios from "axios";
 
-const GOT_PRODUCTS = 'GOT_PRODUCTS'
-const GOT_PRODUCT = 'GOT_PRODUCT'
+const GOT_PRODUCTS = "GOT_PRODUCTS";
+const GOT_PRODUCT = "GOT_PRODUCT";
+
 function gotProducts(products) {
   return {
     type: GOT_PRODUCTS,
-    products
-  }
+    products,
+  };
 }
 
 function gotProduct(product) {
   return {
     type: GOT_PRODUCT,
-    product
-  }
+    product,
+  };
 }
 
 export function getProducts() {
-  return async dispatch => {
+  return async (dispatch) => {
     try {
-      const {data} = await axios.get(`/api/products`)
-      dispatch(gotProducts(data))
+      const { data } = await axios.get(`/api/products`);
+      dispatch(gotProducts(data));
     } catch (err) {
-      console.error(err)
+      console.error(err);
     }
-  }
+  };
 }
 
 export function getProduct(productId) {
-  return async dispatch => {
+  return async (dispatch) => {
     try {
-      const {data} = await axios.get(`/api/products/${productId}`)
-      dispatch(gotProduct(data))
+      const { data } = await axios.get(`/api/products/${productId}`);
+      dispatch(gotProduct(data));
     } catch (error) {
-      console.error(err)
+      console.error(error);
     }
-  }
+  };
 }
 
 const productState = {
   allProducts: [],
-  singleProduct: {}
-}
+  singleProduct: {},
+};
 
 const productReducer = (state = productState, action) => {
   switch (action.type) {
     case GOT_PRODUCTS:
-      return {...state, allProducts: state.allProducts.concat(action.products)}
+      return { ...state, allProducts: [...action.products] };
     case GOT_PRODUCT: {
-      const newSingleProduct = {...state, singleProduct: action.product}
-      return newSingleProduct
+      return { ...state, singleProduct: { ...action.product } };
     }
     default:
-      return state
+      return state;
   }
-}
+};
 
-export default productReducer
+export default productReducer;
