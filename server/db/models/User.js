@@ -3,6 +3,7 @@ const db = require("../db");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const Order = require("./Order");
+const Product = require("./Product");
 const axios = require("axios");
 
 const SALT_ROUNDS = 5;
@@ -79,17 +80,14 @@ User.findByToken = async function (token) {
   try {
     if (token.includes("Bearer ")) token = token.replace("Bearer ", "");
     const { id } = await jwt.verify(token, process.env.JWT);
-    const user = await User.findByPk(id);
+    const user = await User.findByPk(id, {
+      attributes: ["id", "username", "email", "imageUrl", "role"],
+      include: { model: Order, include: Product },
+    });
     if (!user) {
       throw "nooo";
     }
-    return {
-      id: user.id,
-      email: user.email,
-      username: user.username,
-      role: user.role,
-      imageUrl: user.imageUrl,
-    };
+    return user;
   } catch (ex) {
     const error = Error("bad token");
     error.status = 401;

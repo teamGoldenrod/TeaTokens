@@ -28,66 +28,66 @@ async function seed() {
       passwordConfirm: "123",
       email: "yoyo@yahoo.com",
     }),
-    // User.create({
-    //   username: "zack",
-    //   password: "123",
-    //   passwordConfirm: "123",
-    //   email: "zack@yahoo.com",
-    // }),
-    // User.create({
-    //   username: "moseby",
-    //   password: "123",
-    //   passwordConfirm: "123",
-    //   email: "moseby@yahoo.com",
-    // }),
-    // User.create({
-    //   username: "ashley",
-    //   password: "123",
-    //   passwordConfirm: "123",
-    //   email: "ashley@yahoo.com",
-    // }),
-    // User.create({
-    //   username: "cool",
-    //   password: "123",
-    //   passwordConfirm: "123",
-    //   email: "coolstuff@yahoo.com",
-    // }),
-    // User.create({
-    //   username: "awesome",
-    //   password: "123",
-    //   passwordConfirm: "123",
-    //   email: "awesome@yahoo.com",
-    // }),
-    // User.create({
-    //   username: "peter",
-    //   password: "123",
-    //   passwordConfirm: "123",
-    //   email: "peter@yahoo.com",
-    // }),
-    // User.create({
-    //   username: "parker",
-    //   password: "123",
-    //   passwordConfirm: "123",
-    //   email: "parker@yahoo.com",
-    // }),
-    // User.create({
-    //   username: "eddie",
-    //   password: "123",
-    //   passwordConfirm: "123",
-    //   email: "brock@yahoo.com",
-    // }),
-    // User.create({
-    //   username: "bla bla",
-    //   password: "123",
-    //   passwordConfirm: "123",
-    //   email: "blabla@yahoo.com",
-    // }),
-    // User.create({
-    //   username: "hi bla",
-    //   password: "123",
-    //   passwordConfirm: "123",
-    //   email: "hibla@yahoo.com",
-    // }),
+    User.create({
+      username: "zack",
+      password: "123",
+      passwordConfirm: "123",
+      email: "zack@yahoo.com",
+    }),
+    User.create({
+      username: "moseby",
+      password: "123",
+      passwordConfirm: "123",
+      email: "moseby@yahoo.com",
+    }),
+    User.create({
+      username: "ashley",
+      password: "123",
+      passwordConfirm: "123",
+      email: "ashley@yahoo.com",
+    }),
+    User.create({
+      username: "cool",
+      password: "123",
+      passwordConfirm: "123",
+      email: "coolstuff@yahoo.com",
+    }),
+    User.create({
+      username: "awesome",
+      password: "123",
+      passwordConfirm: "123",
+      email: "awesome@yahoo.com",
+    }),
+    User.create({
+      username: "peter",
+      password: "123",
+      passwordConfirm: "123",
+      email: "peter@yahoo.com",
+    }),
+    User.create({
+      username: "parker",
+      password: "123",
+      passwordConfirm: "123",
+      email: "parker@yahoo.com",
+    }),
+    User.create({
+      username: "eddie",
+      password: "123",
+      passwordConfirm: "123",
+      email: "brock@yahoo.com",
+    }),
+    User.create({
+      username: "bla bla",
+      password: "123",
+      passwordConfirm: "123",
+      email: "blabla@yahoo.com",
+    }),
+    User.create({
+      username: "hi bla",
+      password: "123",
+      passwordConfirm: "123",
+      email: "hibla@yahoo.com",
+    }),
   ]);
 
   const products = await Promise.all([
@@ -172,7 +172,7 @@ async function seed() {
       price: 2.99,
     }),
   ]);
-  /*
+
   const orders = await Promise.all([
     Order.create({ isCart: true }),
     Order.create({ isCart: true }),
@@ -186,35 +186,36 @@ async function seed() {
     Order.create({ isCart: false }),
     Order.create({ isCart: false }),
   ]);
-  */
-  // generate random products
-  // const giveMeRandomProducts = () => {
-  //   const randomNum = () => Math.floor(Math.random() * (products.length - 10));
-  //   let counter = 0;
-  //   let idxAdded = {};
-  //   while (counter < randomNum() + 1) {
-  //     const randIdx = randomNum();
-  //     if (idxAdded[randIdx]) continue;
-  //     idxAdded[randIdx] = products[randIdx];
-  //     counter++;
-  //   }
-  //   return Object.values(idxAdded);
-  // };
 
-  // for (let i = 0; i < orders.length; i++) {
-  //   const randProducts = giveMeRandomProducts();
-  //   for (let j = 0; j < randProducts.length; j++) {
-  //     await orders[i].addProduct(randProducts[j], {
-  //       through: { numItems: 1, totalPrice: randProducts[j].price },
-  //     });
-  //     const orderProduct = await OrderProduct.findOne({
-  //       where: { orderId: orders[i].id, productId: randProducts[j].id },
-  //     });
-  //     await users[i].addOrder_product(orderProduct);
-  //   }
-  // }
-  console.log(OrderProduct);
-  // console.log(`seeded ${users.length} users`);
+  // generate random products
+  const giveMeRandomProducts = () => {
+    const randomNum = () => Math.floor(Math.random() * (products.length - 10));
+    let counter = 0;
+    let idxAdded = {};
+    while (counter < randomNum() + 1) {
+      const randIdx = randomNum();
+      if (idxAdded[randIdx]) continue;
+      idxAdded[randIdx] = products[randIdx];
+      counter++;
+    }
+    return Object.values(idxAdded);
+  };
+
+  for (let i = 0; i < orders.length; i++) {
+    const randProducts = giveMeRandomProducts();
+    for (let j = 0; j < randProducts.length; j++) {
+      await users[i].addOrder(orders[i]);
+      await orders[i].addProduct(randProducts[j], {
+        through: {
+          numItems: 1,
+          totalPrice: randProducts[j].price,
+          userId: users[i].id,
+        },
+      });
+    }
+  }
+
+  console.log(`seeded ${users.length} users`);
   console.log(`seeded successfully`);
   return {
     users: {

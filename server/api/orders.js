@@ -12,7 +12,6 @@ router.use(getUserHelper);
     prodId
   }
 */
-
 //When user adds a product to cart, it creates or finds the order that has isCart true
 //and adds the product there
 router.post("/", async (req, res, next) => {
@@ -23,6 +22,10 @@ router.post("/", async (req, res, next) => {
     const [order] = await Order.findOrCreate({
       where: { userId: user.id, isCart: true },
       include: { model: Product },
+      defaults: {
+        userId: user.id,
+        isCart: true,
+      },
     });
     await order.addProduct(product, {
       through: { numItems: 1, totalPrice: product.price, userId: user.id },
