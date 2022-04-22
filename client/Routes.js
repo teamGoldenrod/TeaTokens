@@ -19,19 +19,20 @@ class Routes extends Component {
 
     return (
       <div>
-        {isLoggedIn ? (
-          <Switch>
-            <Route path="/home" component={Home} />
+        <Switch>
+          <Route path="/home" component={Home} />
+          {!isLoggedIn && (
+            <Fragment>
+              <Route path="/" exact component={Login} />
+              <Route path="/login" component={Login} />
+              <Route path="/signup" component={Signup} />
+              <Route path="/success" component={Confirmation} />
+            </Fragment>
+          )}
+          <Route path="*">
             <Redirect to="/home" />
-          </Switch>
-        ) : (
-          <Switch>
-            <Route path="/" exact component={Login} />
-            <Route path="/login" component={Login} />
-            <Route path="/signup" component={Signup} />
-            <Route path="/success" component={Confirmation} />
-          </Switch>
-        )}
+          </Route>
+        </Switch>
       </div>
     );
   }
