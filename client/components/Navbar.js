@@ -33,6 +33,9 @@ const Navbar = ({ handleClick, isLoggedIn, user }) => {
             <Link to="/aboutus">about us</Link>
           </Text>
           <Text>
+            <Link to="/products">shop</Link>
+          </Text>
+          <Text>
             <Link to="/cart">cart</Link>
           </Text>
 

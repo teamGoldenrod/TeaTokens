@@ -1,19 +1,19 @@
-import React from 'react'
-import Axios from 'axios'
-import {Link} from 'react-router-dom'
-import {connect} from 'react-redux'
-import Cartproducts from './Cartproducts'
-import history from '../history'
-import {addCartItem, deleteCartItem, clearCart} from '../store/cart'
+import React from "react";
+import Axios from "axios";
+import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+import Cartproducts from "./Cartproducts";
+import history from "../history";
+import { addCartItem, deleteCartItem, clearCart } from "../store/cart";
 
 class Cart extends React.Component {
   constructor() {
-    super()
-    this.checkout = this.checkout.bind(this)
-    this.total = this.total.bind(this)
-    this.totalItems = this.totalItems.bind(this)
-    this.handleSubmit = this.handleSubmit.bind(this)
-    this.handleChange = this.handleChange.bind(this)
+    super();
+    this.checkout = this.checkout.bind(this);
+    this.total = this.total.bind(this);
+    this.totalItems = this.totalItems.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
 
   componentDidMount() {
@@ -21,48 +21,45 @@ class Cart extends React.Component {
   }
 
   handleSubmit() {
-    this.props.checkOut()
+    this.props.checkOut();
   }
 
   handleChange(event) {
     this.setState({
-      Entry: event.target.value
-    })
+      Entry: event.target.value,
+    });
   }
 
   async checkout() {
-    const order = this.props.cart
+    const order = this.props.cart;
 
-    const boughtOrder = await Axios.post(
-      `/api/orders/checkout/${order.id}`,
-      {
-        total: this.total(true)
-      }
-    )
-    const userInfo = await Axios.get(`/api/users/${boughtOrder.data.userId}`)
-    localStorage.setItem('completedCart', JSON.stringify(boughtOrder.data))
-    localStorage.setItem('userInfo', JSON.stringify(userInfo))
-    this.props.clearCart()
-    history.push(`/checkout/${boughtOrder.data.id}`)
+    const boughtOrder = await Axios.post(`/api/orders/checkout/${order.id}`, {
+      total: this.total(true),
+    });
+    const userInfo = await Axios.get(`/api/users/${boughtOrder.data.userId}`);
+    localStorage.setItem("completedCart", JSON.stringify(boughtOrder.data));
+    localStorage.setItem("userInfo", JSON.stringify(userInfo));
+    this.props.clearCart();
+    history.push(`/checkout/${boughtOrder.data.id}`);
   }
 
   total(db) {
-    let total = 0
-    const items = this.props.cart.order_items
-    if (!items.length) return 0
+    let total = 0;
+    const items = this.props.cart.order_items;
+    if (!items.length) return 0;
     for (let i = 0; i < items.length; i++) {
-      let currentProduct = items[i].product
-      let productPrice = currentProduct.price * items[i].amount
-      total += productPrice
+      let currentProduct = items[i].product;
+      let productPrice = currentProduct.price * items[i].amount;
+      total += productPrice;
     }
   }
   totalItems() {
-    let total = 0
-    const items = this.props.cart.order_items
+    let total = 0;
+    const items = this.props.cart.order_items;
     for (let i = 0; i < items.length; i++) {
-      total += Number(items[i].amount)
+      total += Number(items[i].amount);
     }
-    return total
+    return total;
   }
 
   render() {
@@ -76,7 +73,7 @@ class Cart extends React.Component {
           <div />
         </div>
         {this.props.cart.order_items.length !== 0 ? (
-          this.props.cart.order_items.map(current => {
+          this.props.cart.order_items.map((current) => {
             return (
               <Cartitem
                 key={current.product.id}
@@ -84,7 +81,7 @@ class Cart extends React.Component {
                 remove={this.props.deleteCartItem}
                 addItem={this.props.addCartItem}
               />
-            )
+            );
           })
         ) : (
           <div id="empty-cart">
@@ -110,24 +107,24 @@ class Cart extends React.Component {
           </Link>
         )}
       </div>
-    )
+    );
   }
 }
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
     deleteCartItem: (orderId, productId) =>
       dispatch(deleteCartItem(orderId, productId)),
     addCartItem: (orderId, productId, qty) =>
       dispatch(addCartItem(orderId, productId, qty)),
-    clearCart: () => dispatch(clearCart())
-  }
-}
+    clearCart: () => dispatch(clearCart()),
+  };
+};
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     user: state.user,
-    cart: state.cart
-  }
-}
-export default connect(mapStateToProps, mapDispatchToProps)(Cart)
+    cart: state.cart,
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(Cart);
