@@ -94,82 +94,162 @@ async function seed() {
     Product.create({
       name: "Green Tea",
       price: 1.99,
+      imageUrl:
+        "https://rishi-tea.com/product/image/medium/ogtm-sana_green-tea-mint-organic-loose-leaf-blend.jpg",
+      description:
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
     }),
     Product.create({
       name: "Peppermint Tea",
       price: 2.99,
+      imageUrl:
+        "https://rishi-tea.com/product/image/medium/opep-sana_peppermint-organic-loose-leaf-herbal-tea.jpg",
+      description:
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
     }),
     Product.create({
       name: "Oolong Tea",
       price: 1.99,
+      imageUrl:
+        "https://rishi-tea.com/product/image/medium/oro-sana_ruby-oolong-organic-loose-leaf-oolong-tea.jpg",
+      description:
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
     }),
     Product.create({
       name: "Black Tea",
       price: 2.99,
+      imageUrl:
+        "https://rishi-tea.com/product/image/medium/oeg-sana_earl-grey-organic-15-tea-bag-black-tea-blend.jpg",
+      description:
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
     }),
     Product.create({
       name: "Chamomile Tea",
       price: 2.99,
+      imageUrl:
+        "https://rishi-tea.com/product/image/medium/ocbl2-sana_golden-chamomile-blossoms-organic-loose-leaf-herbal-tea.jpg",
+      description:
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
     }),
     Product.create({
       name: "White Tea",
       price: 1.99,
+      imageUrl:
+        "https://rishi-tea.com/product/image/medium/owtrm-sana_white-tea-rose-melange-organic-loose-leaf-white-tea-blend.jpg",
+      description:
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
     }),
     Product.create({
-      name: "Fermented Tea",
+      name: "Ginger Tea",
       price: 2.99,
+      imageUrl:
+        "https://rishi-tea.com/product/image/medium/oging-sana_ginger-organic-loose-leaf-herbal-tea.jpg",
+      description:
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
     }),
     Product.create({
-      name: "Fringe Tea",
+      name: "Lavender Mint Tea",
       price: 1.99,
+      imageUrl:
+        "https://rishi-tea.com/product/image/medium/olm-sana_ops250-rp.jpg",
+      description:
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
     }),
     Product.create({
-      name: "Herbal Tea",
+      name: "Jasmine Green Tea",
       price: 2.99,
+      imageUrl:
+        "https://rishi-tea.com/product/image/medium/ojt-sana_jasmine-green-organic-loose-leaf-scented-green-tea.jpg",
+      description:
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
     }),
     Product.create({
       name: "Pu-erh Tea",
       price: 2.99,
+      imageUrl:
+        "https://rishi-tea.com/product/image/medium/opc-sana_puer-classic-organic-loose-leaf-puer-tea.jpg",
+      description:
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
     }),
     Product.create({
       name: "Matcha Tea",
       price: 1.99,
+      imageUrl:
+        "https://rishi-tea.com/product/image/medium/teamat-sana_teahouse-matcha-organic--powder-japanese-green-tea.jpg",
+      description:
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
     }),
     Product.create({
-      name: "Artichoke Tea",
+      name: "Rooibos Tea",
       price: 2.99,
+      imageUrl:
+        "https://rishi-tea.com/product/image/medium/obr-sana_blueberry-rooibos-organic-loose-leaf-herbal-tea-infusion.jpg",
+      description:
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
     }),
     Product.create({
       name: "Barley Tea",
       price: 1.99,
+      imageUrl:
+        "https://rishi-tea.com/product/image/medium/ohouj-sana_houjicha-organic-loose-leaf-japanese-green-tea.jpg",
+      description:
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
     }),
     Product.create({
       name: "Moringa Tea",
       price: 2.99,
+      imageUrl:
+        "https://rishi-tea.com/product/image/medium/orshiso-sana_redshiso_looseleaf_sana.png",
+      description:
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
     }),
     Product.create({
       name: "Brown Rice Tea",
       price: 2.99,
+      imageUrl:
+        "https://rishi-tea.com/product/image/medium/houjshiso-sana_hojishiso-loose-leaf-sana.jpg",
+      description:
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
     }),
     Product.create({
-      name: "Chaga Tea",
+      name: "Vanilla Tea",
       price: 1.99,
+      imageUrl:
+        "https://rishi-tea.com/product/image/medium/ovb-sana_vanilla-bean-organic-loose-black-tea-blend-infusion.jpg",
+      description:
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
     }),
     Product.create({
       name: "Chai Tea",
       price: 2.99,
+      imageUrl:
+        "https://rishi-tea.com/product/image/medium/otc-sana_tulsichai-looseleaftea-sana.jpg",
+      description:
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
     }),
     Product.create({
       name: "Dandelion Tea",
       price: 1.99,
+      imageUrl:
+        "https://rishi-tea.com/product/image/medium/owgd-sana_white-ginseng-detox-organic-loose-leaf-herbal-tea.jpg",
+      description:
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
     }),
     Product.create({
-      name: "Essiac Tea",
+      name: "Cranberry Tea",
       price: 2.99,
+      imageUrl:
+        "https://rishi-tea.com/product/image/medium/ccranc-sana_chileancranberrycitrus-looseleaf-sana.jpg",
+      description:
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
     }),
     Product.create({
       name: "Hibiscus Tea",
       price: 2.99,
+      imageUrl:
+        "https://rishi-tea.com/product/image/medium/ohcs-sana_hibiscus-organic-loose-leaf-herbal-tea.jpg",
+      description:
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
     }),
   ]);
 

@@ -1,38 +1,73 @@
-import React from "react";
+import React, { Fragment as Fr } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { logout } from "../store";
+import {
+  Text,
+  HStack,
+  Spacer,
+  Avatar,
+  Box,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  Container,
+} from "@chakra-ui/react";
 
 const Navbar = ({ handleClick, isLoggedIn, user }) => {
   console.log(user);
   return (
-    <div id="navbar" className="navbar">
-      <h1 id="title">
-        <Link to="/home">TeaTokens</Link>
-      </h1>
-      <nav>
-        {isLoggedIn ? (
-          <div>
-            {/* The navbar will show these links after you log in */}
-            <h3>Welcome, {user.username.split(" ")[0]}!</h3>
-            <Link to="/aboutus">About Us</Link>
-            <a href="#" onClick={handleClick}>
-              Logout
-            </a>
-            <Link to={`/users/${user.id}/profile`}>Profile</Link>
-            <Link to="/cart">Cart</Link>
-          </div>
-        ) : (
-          <div>
-            {/* The navbar will show these links before you log in */}
-            <Link to="/aboutus">About Us</Link>
-            <Link to="/login">Login</Link>
-            <Link to="/signup">Sign Up</Link>
-            <Link to="/cart">Cart</Link>
-          </div>
-        )}
-      </nav>
-    </div>
+    <Box>
+      <Container maxW="container.xl">
+        <HStack fontSize="1.4rem" pt={12} spacing="30px">
+          <Text
+            fontFamily="Alumni Sans Inline One, cursive"
+            color="tea.green"
+            fontSize="3.9rem"
+          >
+            <Link to="/home">TeaTokens</Link>
+          </Text>
+          <Spacer />
+          <Text>
+            <Link to="/aboutus">about us</Link>
+          </Text>
+          <Text>
+            <Link to="/cart">cart</Link>
+          </Text>
+
+          {isLoggedIn ? (
+            <Fr>
+              {/* The navbar will show these links after you log in */}
+
+              <Menu>
+                <MenuButton as="button">
+                  <Avatar name={user.username} />
+                </MenuButton>
+                <MenuList>
+                  <MenuItem>Profile</MenuItem>
+                  <MenuItem as="button" onClick={handleClick}>
+                    Logout
+                  </MenuItem>
+                </MenuList>
+              </Menu>
+
+              {/*<h3>Welcome, {user.username.split(" ")[0]}!</h3>
+
+          <Link to={`/users/${user.id}/profile`}>Profile</Link>
+
+          <a href="#" onClick={handleClick}>
+            Logout
+      </a>*/}
+            </Fr>
+          ) : (
+            <Fr>
+              <Link to="/auth">sign in</Link>
+            </Fr>
+          )}
+        </HStack>
+      </Container>
+    </Box>
   );
 };
 

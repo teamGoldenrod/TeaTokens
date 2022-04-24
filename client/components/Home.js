@@ -1,7 +1,15 @@
-import React from "react";
+import React, { Fragment as Fr } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { getProducts } from "../store/product";
+import {
+  Heading,
+  Grid,
+  Image,
+  GridItem as Gi,
+  Text,
+  VStack,
+} from "@chakra-ui/react";
 
 /**
  * COMPONENT
@@ -19,7 +27,7 @@ export class Home extends React.Component {
     const products = this.props.products;
     const featured = [];
     const map = {};
-    while (featured.length !== 4 && products.length) {
+    while (featured.length !== 6 && products.length) {
       const random = Math.floor(Math.random() * products.length);
       if (map[random] === undefined) {
         featured.push(products[random]);
@@ -31,13 +39,53 @@ export class Home extends React.Component {
   render() {
     console.log(this.props.products);
     return (
-      <div className="home_page">
+      <Fr>
+        <Grid
+          templateColumns="repeat(auto-fill,minmax(20rem,1fr))"
+          gap="2.5rem"
+        >
+          <Gi gridColumn="1 / span 2">
+            <Image
+              src="https://leavla.com/wp-content/uploads/2019/06/Darjeeling-Green-Tera.jpg"
+              alt="tea image"
+              objectFit="cover"
+              width="100%"
+            />
+          </Gi>
+          <Gi alignSelf="center">
+            <Heading color="tea.brown" fontWeight="700" fontSize="5xl" mb={4}>
+              Only The Best
+            </Heading>
+            <Text fontSize="lg">
+              TeaTokens offers the highest quality hand-picked, full-leaf teas
+              from the finest tea gardens and estates.
+            </Text>
+          </Gi>
+          <Gi gridColumn="1 / -1">
+            <Heading color="tea.green" textTransform="uppercase">
+              Featured
+            </Heading>
+          </Gi>
+          {this.props.products.length &&
+            this.randomizeFeaturedProducts().map((product) => {
+              return (
+                <Gi key={product.id}>
+                  <VStack spacing="10px">
+                    <Image src={product.imageUrl} alt="tea image" />
+                    <Heading color="tea.matcha">{product.name}</Heading>
+                    <Text>{product.price} USD</Text>
+                  </VStack>
+                </Gi>
+              );
+            })}
+        </Grid>
+        {/*<div className="home_page">
         <div className="center_container">
           <div className="img_home">
             <img src="?" />
           </div>
           <div className="content_home">
-            <h4>Only The Best</h4>
+            <Heading>Only The Best</Heading>
             {this.props.user.id ? (
               <div className="siteInfo_home">
                 <p>
@@ -69,23 +117,10 @@ export class Home extends React.Component {
         </div>
         <h2>Featured Products</h2>
         <div className="featured_products">
-          {this.props.products.length &&
-            this.randomizeFeaturedProducts().map((product) => {
-              return (
-                <div className="single_featured_product" key={product.id}>
-                  <Link to={`/products/${product.id}`}>
-                    <img
-                      className="single_featured_img"
-                      src={product.imageUrl}
-                    />
-                    <h3>{product.name}</h3>
-                  </Link>
-                  <p>{product.price} USD</p>
-                </div>
-              );
-            })}
+
         </div>
-      </div>
+          </div>*/}
+      </Fr>
     );
   }
 }
