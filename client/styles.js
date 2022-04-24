@@ -16,7 +16,8 @@ export const buttonStyle = (modify = null) => {
     py: "0.3rem",
     borderRadius: "5px",
     bgColor: "tea.green",
-    color: "white",
+    color: "tea.light.100",
+    cursor: "pointer",
   };
   if (modify === "outline") {
     styleObj.bgColor = "none";

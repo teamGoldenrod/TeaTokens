@@ -32,19 +32,9 @@ class Routes extends Component {
             {!isLoggedIn ? <AuthPage /> : <Redirect to="/home" />}
           </Route>
 
-           
-              
-              
-              {/* <Route path="/cart" component={Cart} /> */}
-              <Route exact path="/products" component={Allproducts} />
-              <Route
-                exact
-                path="/products/:productId"
-                component={Singleproduct}
-              />
-
-           
-         
+          {/* <Route path="/cart" component={Cart} /> */}
+          <Route exact path="/products" component={Allproducts} />
+          <Route exact path="/products/:productId" component={Singleproduct} />
 
           <Route path="*">
             <Redirect to="/home" />

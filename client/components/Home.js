@@ -2,14 +2,9 @@ import React, { Fragment as Fr } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { getProducts } from "../store/product";
-import {
-  Heading,
-  Grid,
-  Image,
-  GridItem as Gi,
-  Text,
-  VStack,
-} from "@chakra-ui/react";
+import MyGrid from "./ui/MyGrid";
+import { Heading, Image, GridItem as Gi, Text } from "@chakra-ui/react";
+import ProductItem from "./ProductItem";
 
 /**
  * COMPONENT
@@ -40,10 +35,7 @@ export class Home extends React.Component {
     console.log(this.props.products);
     return (
       <Fr>
-        <Grid
-          templateColumns="repeat(auto-fill,minmax(20rem,1fr))"
-          gap="2.5rem"
-        >
+        <MyGrid mb="2rem">
           <Gi gridColumn="1 / span 2">
             <Image
               src="https://leavla.com/wp-content/uploads/2019/06/Darjeeling-Green-Tera.jpg"
@@ -68,58 +60,9 @@ export class Home extends React.Component {
           </Gi>
           {this.props.products.length &&
             this.randomizeFeaturedProducts().map((product) => {
-              return (
-                <Gi key={product.id}>
-                  <VStack spacing="10px">
-                    <Image src={product.imageUrl} alt="tea image" />
-                    <Heading color="tea.matcha">{product.name}</Heading>
-                    <Text>{product.price} USD</Text>
-                  </VStack>
-                </Gi>
-              );
+              return <ProductItem key={product.id} product={product} />;
             })}
-        </Grid>
-        {/*<div className="home_page">
-        <div className="center_container">
-          <div className="img_home">
-            <img src="?" />
-          </div>
-          <div className="content_home">
-            <Heading>Only The Best</Heading>
-            {this.props.user.id ? (
-              <div className="siteInfo_home">
-                <p>
-                  <em>TeaTokens</em>TeaTokens offers the highest quality
-                  hand-picked, full-leaf teas from the finest tea gardens and
-                  estates. From tea beginners to avid tea drinkers, our
-                  selection of rare teas, signature blends, and fun flavors in
-                  loose tea, tea sachets, and convenient tea bags are perfect
-                  for everyone.
-                </p>
-              </div>
-            ) : (
-              <div className="signup_home">
-                <p>
-                  Join E-List Loyalty and get the most unique tea in the world
-                </p>
-                <Link to="/signup">
-                  <button>Sign up</button>
-                </Link>
-              </div>
-            )}
-            <div className="allProducts_home">
-              <p>View Our Products</p>
-              <Link to="/products">
-                <button>Shop Now</button>
-              </Link>
-            </div>
-          </div>
-        </div>
-        <h2>Featured Products</h2>
-        <div className="featured_products">
-
-        </div>
-          </div>*/}
+        </MyGrid>
       </Fr>
     );
   }

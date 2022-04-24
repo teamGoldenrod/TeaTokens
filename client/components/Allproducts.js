@@ -1,38 +1,67 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { getProducts } from "../store/product";
+// import {Link} from '.'
+import MyGrid from "./ui/MyGrid";
+import ProductItem from "./ProductItem";
+import {
+  GridItem as Gi,
+  Heading,
+  Input,
+  HStack,
+  Spacer,
+} from "@chakra-ui/react";
+import { inputStyle } from "../styles";
 
 export class AllProducts extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      search: "",
+    };
+    this.handleSearch = this.handleSearch.bind(this);
+  }
   componentDidMount() {
-    this.props.getProducts();
+    if (!this.props.products.length) this.props.getProducts();
+  }
+  handleSearch(e) {
+    this.setState({ search: e.target.value });
   }
   render() {
-    console.log(this.props.products);
     return (
-      <div className="allProducts">
-        {this.props.products.map((product) => {
-          return (
-            <div key={product.id} className="product">
-              <Link to={`/products/${product.id}`}>
-                <img className="product-img" src={product.imageUrl} />
-                <h3>{product.name}</h3>
-              </Link>
-              <p>{product.price} USD</p>
-              {/* need to add functionality */}
-              <button id="add" type="button">
-                Add To Cart
-              </button>
-              <br />
-              <br />
-            </div>
-          );
-        })}
-      </div>
+      <MyGrid mb="3rem">
+        <Gi gridColumn="1 / -1" as={HStack} spacing="1rem">
+          <Heading color="tea.green" textTransform="uppercase">
+            Enjoy
+          </Heading>
+          <Spacer />
+          <Input
+            name="search"
+            type="text"
+            placeholder="Your tea"
+            {...inputStyle}
+            onChange={this.handleSearch}
+            value={this.state.search}
+          />
+        </Gi>
+        {this.props.products
+          .filter((product) => {
+            if (!this.state.search.trim()) return true;
+            return product.name
+              .toLowerCase()
+              .includes(this.state.search.trim());
+          })
+          .map((product) => {
+            return <ProductItem key={product.id} product={product} />;
+          })}
+      </MyGrid>
     );
   }
 }
 
+// <div className="allProducts">
+//
+//       </div>
 const mapStateToProps = (state) => {
   return {
     products: state.product.allProducts,
