@@ -41,7 +41,8 @@ const User = db.define("user", {
   },
   imageUrl: {
     type: Sequelize.STRING,
-    defaultValue: "some image url here soon",
+    defaultValue:
+      "https://e6.pngbyte.com/pngpicture/76945/png-default-image-png-Default-Profile_thumbnail.png",
   },
   role: {
     type: Sequelize.ENUM("admin", "customer"),

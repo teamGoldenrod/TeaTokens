@@ -1,50 +1,74 @@
-import React from "react";
+import React, { useState } from "react";
+import { inputStyle, buttonStyle } from "../styles";
 import { connect } from "react-redux";
 import { authenticate } from "../store";
-
+import {
+  VStack,
+  Input,
+  Button,
+  Alert,
+  AlertDescription,
+  AlertIcon,
+  Box,
+} from "@chakra-ui/react";
 /**
  * COMPONENT
  */
+
 const AuthForm = (props) => {
   const { name, displayName, handleSubmit, error } = props;
-
   return (
-    <div>
-      <form onSubmit={handleSubmit} name={name}>
-        <div>
-          <label htmlFor="username">
-            <small>Username</small>
-          </label>
-          <input name="username" type="text" />
-        </div>
-        {name === "signup" && (
-          <div>
-            <label htmlFor="email">
-              <small>Email</small>
-            </label>
-            <input name="email" type="email" />
-          </div>
-        )}
-        <div>
-          <label htmlFor="password">
-            <small>Password</small>
-          </label>
-          <input name="password" type="password" />
-        </div>
-        {name === "signup" && (
-          <div>
-            <label htmlFor="confirmPassword">
-              <small>Confirm Password</small>
-            </label>
-            <input name="confirmPassword" type="password" />
-          </div>
-        )}
-        <div>
-          <button type="submit">{displayName}</button>
-        </div>
-        {error && error.response && <div> {error.response.data} </div>}
-      </form>
-    </div>
+    <VStack
+      as="form"
+      onSubmit={handleSubmit}
+      name={name}
+      w="40%"
+      spacing="6"
+      marginBottom={4}
+    >
+      <Input
+        name="username"
+        type="text"
+        placeholder="Username"
+        {...inputStyle}
+      />
+
+      {name === "signup" && (
+        <Input name="email" type="email" placeholder="Email" {...inputStyle} />
+      )}
+
+      <Input
+        name="password"
+        type="password"
+        placeholder="Password"
+        {...inputStyle}
+      />
+
+      {name === "signup" && (
+        <Input
+          name="confirmPassword"
+          type="password"
+          placeholder="Confirm Password"
+          {...inputStyle}
+        />
+      )}
+
+      <Box
+        as="button"
+        type="submit"
+        {...buttonStyle()}
+        transform="translateY(3.5px)"
+      >
+        {displayName}
+      </Box>
+
+      {error && error.response && (
+        <Alert status="error">
+          <AlertIcon />
+          <AlertDescription>{error.response.data}</AlertDescription>
+        </Alert>
+      )}
+    </VStack>
   );
 };
 
