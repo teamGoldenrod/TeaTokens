@@ -11,6 +11,7 @@ router.get("/", async (req, res, next) => {
     const products = await Product.findAll({
       attributes: ["id", "name", "price", "imageUrl"],
     });
+
     res.json(products);
   } catch (err) {
     next(err);

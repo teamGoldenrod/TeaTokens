@@ -2,6 +2,7 @@ import React, { Fragment as Fr } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { logout } from "../store";
+import { AiOutlineShoppingCart } from "react-icons/ai";
 import {
   Text,
   HStack,
@@ -13,6 +14,7 @@ import {
   MenuList,
   MenuItem,
   Container,
+  Icon,
 } from "@chakra-ui/react";
 
 const Navbar = ({ handleClick, isLoggedIn, user }) => {
@@ -20,7 +22,7 @@ const Navbar = ({ handleClick, isLoggedIn, user }) => {
   return (
     <Box>
       <Container maxW="container.xl">
-        <HStack fontSize="1.4rem" pt={12} spacing="30px">
+        <HStack fontSize="1.4rem" pt={12} spacing="3rem">
           <Text
             fontFamily="Alumni Sans Inline One, cursive"
             color="tea.green"
@@ -36,7 +38,14 @@ const Navbar = ({ handleClick, isLoggedIn, user }) => {
             <Link to="/products">shop</Link>
           </Text>
           <Text>
-            <Link to="/cart">cart</Link>
+            <Link to="/cart">
+              <Icon
+                as={AiOutlineShoppingCart}
+                w={7}
+                h={7}
+                transform="translateY(3px)"
+              />
+            </Link>
           </Text>
 
           {isLoggedIn ? (
