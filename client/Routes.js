@@ -5,6 +5,7 @@ import { Login, Signup } from "./components/AuthForm";
 import Confirmation from "./components/Confirmation";
 import Home from "./components/Home";
 import { me } from "./store";
+import Cart from "./components/Cart";
 
 /**
  * COMPONENT
@@ -27,6 +28,7 @@ class Routes extends Component {
               <Route path="/login" component={Login} />
               <Route path="/signup" component={Signup} />
               <Route path="/success" component={Confirmation} />
+              {/* <Route path="/cart" component={Cart} /> */}
             </Fragment>
           )}
           <Route path="*">
