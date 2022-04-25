@@ -9,7 +9,15 @@ import {
   Box,
 } from "@chakra-ui/react";
 import { buttonStyle } from "../styles";
+import { addToCart } from "./Helper";
+
 export default function ProductItem({ product }) {
+  async function handleAddProduct() {
+    console.log("adding");
+    await addToCart(product.id);
+    console.log("added");
+  }
+
   return (
     <Gi>
       <VStack
@@ -26,9 +34,7 @@ export default function ProductItem({ product }) {
         as="button"
         {...buttonStyle("outline")}
         marginTop="2"
-        onClick={() => {
-          console.log("add button from product item comp");
-        }}
+        onClick={handleAddProduct}
       >
         Add To Cart
       </Box>

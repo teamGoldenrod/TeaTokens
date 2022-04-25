@@ -5,6 +5,7 @@ import { getProduct } from "../store/product";
 import { addCartItem } from "../store/cart.js";
 import { buttonStyle } from "../styles";
 import axios from "axios";
+import { addToCart } from "./Helper";
 
 import {
   Grid,
@@ -20,7 +21,6 @@ class SingleProduct extends React.Component {
     super();
     // this.handleAddToCart = this.handleAddToCart.bind(this);
     this.handleAddProduct = this.handleAddProduct.bind(this);
-    this.addToCart = this.addToCart.bind(this);
   }
 
   // async handleAddToCart() {
@@ -40,24 +40,8 @@ class SingleProduct extends React.Component {
 
   async handleAddProduct() {
     console.log("adding");
-    await this.addToCart(this.props.product.id);
+    await addToCart(this.props.product.id);
     console.log("added");
-  }
-
-  async addToCart(productId) {
-    try {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        throw new Error("");
-      }
-      await axios.post(
-        `/api/orders`,
-        { prodId: productId },
-        { headers: { authorization: token } }
-      );
-    } catch (err) {
-      console.error(err);
-    }
   }
 
   render() {
