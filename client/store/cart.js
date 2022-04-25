@@ -3,9 +3,6 @@ import axios from "axios";
 
 const cartState = {
   cart: [], // {id, title, descr, price, img, qty}
-  cartItem: {},
-  currentItem: null,
-  orderId: null,
 };
 
 // ACTION TYPES
@@ -23,9 +20,9 @@ export const _gotCart = (cart) => ({
   cart,
 });
 
-export const _addToCart = (productId) => ({
+export const _addToCart = (orderProduct) => ({
   type: ADD_TO_CART,
-  productId,
+  orderProduct,
 });
 
 // adjust quantity
@@ -44,22 +41,23 @@ export const _clearCart = () => ({
   type: CLEAR_CART,
 });
 
-export const _setOrderId = (orderId) => ({
-  type: SET_ORDER_ID,
-  orderId,
-});
-
 // THUNK CREATORS
 export function getCart() {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
     try {
       const token = localStorage.getItem("token");
+      let data;
       if (!token) {
-        throw new Error("");
+        const cartLocal = JSON.parse(localStorage.getItem("cart"));
+        data = Array.isArray(cartLocal)
+          ? [...cartLocal, ...getState().cart.cart]
+          : [...getState().cart.cart];
+      } else {
+        const { data: dataFetched } = await axios.get(`/api/orders/cart`, {
+          headers: { authorization: token },
+        });
+        data = dataFetched;
       }
-      const { data } = await axios.get(`/api/orders/cart`, {
-        headers: { authorization: token },
-      });
       dispatch(_gotCart(data));
     } catch (err) {
       console.error(err);
@@ -73,27 +71,12 @@ const cartReducer = (state = cartState, action) => {
     case GOT_CART:
       return { ...state, cart: [...action.cart] };
 
-    // case ADD_TO_CART:
-    //   // get the items data from the products array
-    //   const item = state.cart.find((prod) => prod.id === action.productId.id);
-    //   // check if item is in the cart
-    //   const inCart = state.cart.find((item) =>
-    //     item.id === action.productId.id ? true : false
-    //   );
-    //   // if item is in cart, adjust quantity
-    //   return {
-    //     ...state,
-    //     cart: inCart
-    //       ? state.cart.map((item) =>
-    //           item.id === action.productId.id
-    //             ? { ...item, qty: item.qty + 1 }
-    //             : item
-    //         )
-    //       : // else add to cart and set qty to 1
-    //         [...state.cart, { ...item, qty: 1 }],
-    //   };
-
-    //   return { ...state, cart: [...state.cart, action.productId] };
+    case ADD_TO_CART:
+      if (
+        state.cart.some((el) => el.productId === action.orderProduct.productId)
+      )
+        return state;
+      return { cart: [...state.cart, action.orderProduct] };
 
     case UPDATE_CART:
       return {
@@ -110,7 +93,7 @@ const cartReducer = (state = cartState, action) => {
       };
 
     case CLEAR_CART:
-      return { ...state, cart: [] };
+      return { cart: [] };
 
     case SET_ORDER_ID:
       return {};
