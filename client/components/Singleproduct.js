@@ -4,6 +4,8 @@ import { connect } from "react-redux";
 import { getProduct } from "../store/product";
 import { addCartItem } from "../store/cart.js";
 import { buttonStyle } from "../styles";
+import axios from "axios";
+
 import {
   Grid,
   GridItem as Gi,
@@ -17,6 +19,8 @@ class SingleProduct extends React.Component {
   constructor() {
     super();
     // this.handleAddToCart = this.handleAddToCart.bind(this);
+    this.handleAddProduct = this.handleAddProduct.bind(this);
+    this.addToCart = this.addToCart.bind(this);
   }
 
   // async handleAddToCart() {
@@ -32,6 +36,28 @@ class SingleProduct extends React.Component {
 
   componentDidMount() {
     this.props.getProduct(this.props.match.params.productId);
+  }
+
+  async handleAddProduct() {
+    console.log("adding");
+    await this.addToCart(this.props.product.id);
+    console.log("added");
+  }
+
+  async addToCart(productId) {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        throw new Error("");
+      }
+      await axios.post(
+        `/api/orders`,
+        { prodId: productId },
+        { headers: { authorization: token } }
+      );
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   render() {
@@ -60,6 +86,7 @@ class SingleProduct extends React.Component {
             justifySelf="start"
             alignSelf="start"
             fontSize="xl"
+            onClick={this.handleAddProduct}
           >
             Add to cart
           </Box>
