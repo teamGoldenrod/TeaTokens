@@ -1,25 +1,114 @@
-import React from "react";
+import React, { Fragment as Fr } from "react";
 import Axios from "axios";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import Cartproducts from "./Cartproducts";
 import history from "../history";
-import { getCart, addCartItem, deleteCartItem, clearCart } from "../store/cart";
+import { getCart } from "../store/cart";
+import {
+  Heading,
+  Grid,
+  GridItem as Gi,
+  Image,
+  HStack,
+  Text,
+  Button,
+  Box,
+} from "@chakra-ui/react";
 
 class Cart extends React.Component {
   constructor() {
     super();
-    // this.getCart = this.getCart.bind(this);
+    this.getSubTotal = this.getSubTotal.bind(this);
   }
 
   componentDidMount() {
     this.props.getCart();
   }
-
+  getSubTotal() {
+    return this.props.cart.reduce(
+      (cur, el) => Math.round((cur + el.totalPrice) * 1e12) / 1e12,
+      0
+    );
+  }
   render() {
-    return <div>goodnight world</div>;
+    return (
+      <Fr>
+        <Heading mb={4}>Your cart</Heading>
+        <Grid
+          templateColumns="65% repeat(3,1fr)"
+          fontSize="lg"
+          alignItems="center"
+          gap={3}
+          pb={12}
+        >
+          <Gi>Product</Gi>
+          <Gi>Price</Gi>
+          <Gi>Quantity</Gi>
+          <Gi>Total</Gi>
+          <Gi
+            gridColumn="1 / -1"
+            borderBottom="1px solid"
+            borderColor="blackAlpha.500"
+            height={1}
+            width="100%"
+          ></Gi>
+
+          {this.props.cart.map((el) => (
+            <Fr key={el.productId}>
+              <Gi as={HStack}>
+                <Image
+                  src={el.product.imageUrl}
+                  alt="tea image"
+                  boxSize="100px"
+                  objectFit="cover"
+                />
+                <Box>
+                  <Text fontWeight="bold" color="tea.green">
+                    {el.product.name}
+                  </Text>
+                  <Button colorScheme="green" size="xs" mr="2">
+                    <Link to={`/products/${el.productId}`}>Check</Link>
+                  </Button>
+                  <Button colorScheme="red" size="xs">
+                    Remove
+                  </Button>
+                </Box>
+              </Gi>
+              <Gi>${el.product.price}</Gi>
+              <Gi>
+                <Button size="sm" borderRadius="full" mr="1">
+                  -
+                </Button>
+                {el.numItems}
+                <Button size="sm" borderRadius="full" ml="1">
+                  +
+                </Button>
+              </Gi>
+              <Gi>${el.totalPrice}</Gi>
+              <Gi
+                gridColumn="1 / -1"
+                borderBottom="1px dotted"
+                borderColor="blackAlpha.500"
+                height={1}
+                width="100%"
+              ></Gi>
+            </Fr>
+          ))}
+          <Gi gridColumn="1 / span 3">Subtotal:</Gi>
+          <Gi fontWeight="bold">${this.getSubTotal()}</Gi>
+        </Grid>
+      </Fr>
+    );
   }
 }
+const mapStateToProps = (state) => {
+  return {
+    cart: state.cart.cart,
+  };
+};
+
+export default connect(mapStateToProps, { getCart })(Cart);
 
 //   constructor() {
 //     super();
@@ -134,12 +223,3 @@ class Cart extends React.Component {
 //     clearCart: () => dispatch(clearCart()),
 //   };
 // };
-
-const mapStateToProps = (state) => {
-  return {
-    user: state.user,
-    cart: state.cart,
-  };
-};
-
-export default connect(mapStateToProps, { getCart })(Cart);

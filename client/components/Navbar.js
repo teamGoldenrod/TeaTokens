@@ -2,6 +2,7 @@ import React, { Fragment as Fr } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { logout } from "../store";
+import { _clearCart } from "../store/cart";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import {
   Text,
@@ -97,6 +98,7 @@ const mapDispatch = (dispatch) => {
   return {
     handleClick() {
       dispatch(logout());
+      dispatch(_clearCart());
     },
   };
 };

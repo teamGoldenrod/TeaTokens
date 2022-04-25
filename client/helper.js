@@ -4,7 +4,7 @@ export async function addToCart(productId) {
   try {
     const token = localStorage.getItem("token");
     if (!token) {
-      throw new Error("");
+      throw new Error("No user found");
     }
     await axios.post(
       `/api/orders`,
@@ -12,6 +12,6 @@ export async function addToCart(productId) {
       { headers: { authorization: token } }
     );
   } catch (err) {
-    console.error(err);
+    throw err;
   }
 }
