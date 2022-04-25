@@ -50,7 +50,7 @@ export const _setOrderId = (orderId) => ({
 });
 
 // THUNK CREATORS
-export async function getCart() {
+export function getCart() {
   return async (dispatch) => {
     try {
       const token = localStorage.getItem("token");
@@ -61,25 +61,6 @@ export async function getCart() {
         headers: { authorization: token },
       });
       dispatch(_gotCart(data));
-    } catch (err) {
-      console.error(err);
-    }
-  };
-}
-
-export async function addToCart(productId) {
-  return async (dispatch) => {
-    try {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        throw new Error("");
-      }
-      const { data } = await axios.post(
-        `api/orders`,
-        { prodId: productId },
-        { headers: { authorization: token } }
-      );
-      dispatch(_addToCart(data));
     } catch (err) {
       console.error(err);
     }
