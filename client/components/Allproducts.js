@@ -49,7 +49,7 @@ export class AllProducts extends React.Component {
             if (!this.state.search.trim()) return true;
             return product.name
               .toLowerCase()
-              .includes(this.state.search.trim());
+              .includes(this.state.search.toLowerCase().trim());
           })
           .map((product) => {
             return <ProductItem key={product.id} product={product} />;
