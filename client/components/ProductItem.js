@@ -22,7 +22,14 @@ export default function ProductItem({ product }) {
         <Heading color="tea.matcha">{product.name}</Heading>
         <Text fontSize="lg">${product.price}</Text>
       </VStack>
-      <Box as="button" {...buttonStyle("outline")} marginTop="2">
+      <Box
+        as="button"
+        {...buttonStyle("outline")}
+        marginTop="2"
+        onClick={() => {
+          console.log("add button from product item comp");
+        }}
+      >
         Add To Cart
       </Box>
     </Gi>
