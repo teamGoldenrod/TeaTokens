@@ -26,8 +26,13 @@ router.post("/", async (req, res, next) => {
         isCart: true,
       },
     });
+    const numOfItems = req.body.numItems || 1;
     await order.addProduct(product, {
-      through: { numItems: 1, totalPrice: product.price, userId: user.id },
+      through: {
+        numItems: numOfItems,
+        totalPrice: product.price * numOfItems,
+        userId: user.id,
+      },
     });
     res.status(201).json({ order, addedProduct: product });
   } catch (err) {
