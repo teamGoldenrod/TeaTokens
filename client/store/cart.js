@@ -29,15 +29,15 @@ export const _addToCart = (productId) => ({
 });
 
 // adjust quantity
-export const _updateCart = (productId, qty) => ({
+export const _updateCart = (orderProduct, qty) => ({
   type: UPDATE_CART,
-  productId,
+  orderProduct,
   qty,
 });
 
-export const _removeFromCart = (productId) => ({
+export const _removeFromCart = (orderProduct) => ({
   type: REMOVE_FROM_CART,
-  productId,
+  orderProduct,
 });
 
 export const _clearCart = () => ({
@@ -64,6 +64,35 @@ export function getCart() {
     } catch (err) {
       console.error(err);
     }
+  };
+}
+
+export function removeFromCart(orderProduct) {
+  return async (dispatch) => {
+    try {
+      // const token = localStorage.getItem("token");
+      // let data;
+      // if (!token) {
+      //   const cartLocal = JSON.parse(localStorage.getItem("cart"));
+      //   // data = Array.isArray(cartLocal)
+      //   //   ? [...cartLocal, ...getState().cart.cart]
+      //   //   : [...getState().cart.cart];
+      // } else {
+      const { data } = await axios.delete(
+        `/api/orders/cart/${orderProduct.id}`
+      );
+
+      dispatch(_removeFromCart(data));
+    } catch (err) {
+      console.error(err);
+    }
+  };
+}
+
+export function updateCart(orderProduct) {
+  return async (dispatch) => {
+    const { data } = await axios.put(`/api/cart/${orderProduct.id}`);
+    dispatch(_updateCart(orderProduct));
   };
 }
 
@@ -104,8 +133,8 @@ const cartReducer = (state = cartState, action) => {
     case REMOVE_FROM_CART:
       return {
         ...state,
-        cart: state.cart.filter((item) => {
-          item.id !== action.productId.id;
+        cart: state.cart.filter((el) => {
+          el.productId !== action.orderProduct.productId;
         }),
       };
 
