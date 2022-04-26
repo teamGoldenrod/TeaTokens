@@ -14,10 +14,8 @@ function ProductToCartBtn({
   ...props
 }) {
   const toast = useToast();
-  console.log(props);
   const handleAddProduct = async () => {
     try {
-      console.log("adding");
       if (auth.id) await addToCart(product.id);
       else {
         addToLocalCart({
@@ -33,7 +31,6 @@ function ProductToCartBtn({
         duration: 1500,
         isClosable: true,
       });
-      console.log("added");
     } catch (e) {
       console.log(e);
     }

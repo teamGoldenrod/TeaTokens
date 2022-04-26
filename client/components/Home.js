@@ -32,7 +32,6 @@ export class Home extends React.Component {
     return featured;
   }
   render() {
-    console.log(this.props.products);
     return (
       <Fr>
         <MyGrid mb="2rem">
