@@ -1,6 +1,6 @@
 import React, { Fragment as Fr } from "react";
 import { Link } from "react-router-dom";
-import { removeFromCart } from "../store/cart";
+import { removeFromCart, decreaseQty, increaseQty } from "../store/cart";
 import { connect } from "react-redux";
 import {
   HStack,
@@ -14,6 +14,16 @@ const Cartproduct = (props) => {
   const { el } = props;
   const handleDelete = async () => {
     await props.removefromCart(el.id);
+  };
+
+  const handleDecrease = async () => {
+    let totalPrice = el.product.price * (el.numItems - 1);
+    await props.decreaseQty(el.id, el.numItems - 1, totalPrice);
+  };
+
+  const handleIncrease = async () => {
+    let totalPrice = el.product.price * (el.numItems + 1);
+    await props.increaseQty(el.id, el.numItems + 1, totalPrice);
   };
 
   return (
@@ -39,11 +49,11 @@ const Cartproduct = (props) => {
       </Gi>
       <Gi>${el.product.price}</Gi>
       <Gi>
-        <Button size="sm" borderRadius="full" mr="1">
+        <Button size="sm" borderRadius="full" mr="1" onClick={handleDecrease}>
           -
         </Button>
         {el.numItems}
-        <Button size="sm" borderRadius="full" ml="1">
+        <Button size="sm" borderRadius="full" ml="1" onClick={handleIncrease}>
           +
         </Button>
       </Gi>
@@ -61,7 +71,10 @@ const Cartproduct = (props) => {
 
 const mapDispatchToProps = (dispatch) => ({
   removefromCart: (id) => dispatch(removeFromCart(id)),
-  // removeFromCart: (id) => dispatch(_removeFromCart(id)),
+  increaseQty: (id, numItems, totalPrice) =>
+    dispatch(increaseQty(id, numItems, totalPrice)),
+  decreaseQty: (id, numItems, totalPrice) =>
+    dispatch(decreaseQty(id, numItems, totalPrice)),
 });
 
 export default connect(null, mapDispatchToProps)(Cartproduct);
