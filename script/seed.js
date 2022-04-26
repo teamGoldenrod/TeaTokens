@@ -259,12 +259,12 @@ async function seed() {
     Order.create({ isCart: true }),
     Order.create({ isCart: true }),
     Order.create({ isCart: true }),
-    Order.create({ isCart: false }),
-    Order.create({ isCart: false }),
-    Order.create({ isCart: false }),
-    Order.create({ isCart: false }),
-    Order.create({ isCart: false }),
-    Order.create({ isCart: false }),
+    Order.create({ isCart: false, subTotal: 20.99 }),
+    Order.create({ isCart: false, subTotal: 25.99 }),
+    Order.create({ isCart: false, subTotal: 23.99 }),
+    Order.create({ isCart: false, subTotal: 30.99 }),
+    Order.create({ isCart: false, subTotal: 10.99 }),
+    Order.create({ isCart: false, subTotal: 8.99 }),
   ]);
 
   // generate random products
