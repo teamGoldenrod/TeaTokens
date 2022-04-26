@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const Order = require("./Order");
 const Product = require("./Product");
+const OrderProduct = require("./OrderProduct");
 
 const SALT_ROUNDS = 5;
 
@@ -82,7 +83,7 @@ User.findByToken = async function (token) {
     const { id } = await jwt.verify(token, process.env.JWT);
     const user = await User.findByPk(id, {
       attributes: ["id", "username", "email", "imageUrl", "role"],
-      include: { model: Order, include: Product },
+      include: [{ model: Order, include: Product }, { model: OrderProduct }],
     });
     if (!user) {
       throw "nooo";

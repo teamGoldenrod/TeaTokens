@@ -8,7 +8,6 @@ import { storeLocalCart } from "./helper";
 class App extends React.Component {
   componentDidUpdate(prevProps) {
     if (this.props.auth.id) return;
-    console.log("UPDATING");
     if (prevProps.cart.length !== this.props.cart.length)
       storeLocalCart(this.props.cart);
   }

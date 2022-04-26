@@ -1,10 +1,20 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { GridItem as Gi, VStack, Image, Heading, Text } from "@chakra-ui/react";
-
+import {
+  GridItem as Gi,
+  VStack,
+  Image,
+  Heading,
+  Text,
+  HStack,
+  Button,
+  Spacer,
+} from "@chakra-ui/react";
+import { connect } from "react-redux";
+import { deleteProduct } from "../store/product";
 import ProductToCartBtn from "./ProductToCartBtn";
 
-export default function ProductItem({ product }) {
+function ProductItem({ product, auth, deleteProduct, view = false }) {
   return (
     <Gi>
       <VStack
@@ -15,9 +25,32 @@ export default function ProductItem({ product }) {
       >
         <Image src={product.imageUrl} alt="tea image" />
         <Heading color="tea.matcha">{product.name}</Heading>
+
         <Text fontSize="lg">${product.price}</Text>
       </VStack>
-      <ProductToCartBtn marginTop="2" product={product} btnStyle="outline" />
+
+      {!view && (
+        <HStack>
+          <ProductToCartBtn
+            marginTop="2"
+            product={product}
+            btnStyle="outline"
+          />
+          <Spacer />
+          {auth.id && auth.role === "admin" && (
+            <Button
+              colorScheme="red"
+              borderRadius="full"
+              size="xs"
+              onClick={() => deleteProduct(product.id)}
+            >
+              X
+            </Button>
+          )}
+        </HStack>
+      )}
     </Gi>
   );
 }
+
+export default connect(null, { deleteProduct })(ProductItem);

@@ -57,7 +57,9 @@ const Navbar = ({ handleClick, isLoggedIn, user }) => {
                   <Avatar name={user.username} />
                 </MenuButton>
                 <MenuList>
-                  <MenuItem>Profile</MenuItem>
+                  <MenuItem as={Link} to="/profile">
+                    Profile
+                  </MenuItem>
                   <MenuItem as="button" onClick={handleClick}>
                     Logout
                   </MenuItem>

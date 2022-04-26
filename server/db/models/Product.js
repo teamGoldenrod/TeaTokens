@@ -25,13 +25,6 @@ const Product = db.define("product", {
     },
   },
   description: { type: Sequelize.TEXT },
-  inventory: {
-    type: Sequelize.INTEGER,
-    defaultValue: 50,
-    validate: {
-      isInt: true,
-    },
-  },
 });
 
 module.exports = Product;
