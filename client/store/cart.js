@@ -9,8 +9,8 @@ const cartState = {
 // ACTION TYPES
 const GOT_CART = "GOT_CART";
 const ADD_TO_CART = "ADD_TO_CART";
-
-const UPDATE_CART = "UPDATE_CART";
+const ADD_QTY = "ADD_QTY";
+const SUB_QTY = "SUB_QTY";
 const REMOVE_FROM_CART = "REMOVE_FROM_CART";
 const CLEAR_CART = "CLEAR_CART";
 const SET_ORDER_ID = "SET_ORDER_ID";
@@ -27,15 +27,18 @@ export const _addToCart = (orderProduct) => ({
 });
 
 // adjust quantity
-export const _updateCart = (productId, qty) => ({
-  type: UPDATE_CART,
-  productId,
-  qty,
+export const _subtractQty = (orderProduct) => ({
+  type: SUB_QTY,
+  orderProduct,
+});
+export const _addQty = (orderProduct) => ({
+  type: ADD_QTY,
+  orderProduct,
 });
 
-export const _removeFromCart = (productId) => ({
+export const _removeFromCart = (id) => ({
   type: REMOVE_FROM_CART,
-  productId,
+  id,
 });
 
 export const _clearCart = () => ({
@@ -66,6 +69,58 @@ export function getCart() {
   };
 }
 
+export function removeFromCart(id) {
+  return async (dispatch, getState) => {
+    // console.log("connected");
+    try {
+      const token = localStorage.getItem("token");
+      let data;
+      if (!token) {
+        throw new Error("no token");
+      } else {
+        console.log("connected2");
+        const { data: dataFetched } = await axios.delete(
+          `/api/orders/cart/${id}`,
+          {
+            headers: { authorization: token },
+          }
+        );
+        data = dataFetched;
+      }
+      dispatch(_removeFromCart(id));
+    } catch (err) {
+      console.error(err);
+    }
+  };
+}
+
+export function increaseQty(orderProduct) {
+  return async (dispatch) => {
+    try {
+      // some logic to increase
+      // need to pass id
+      // need object with numItems and totalPrice
+      const { data } = await axios.put(`/api/orders/cart/${id}`);
+      dispatch(_addQty(data));
+    } catch (err) {
+      console.error(err);
+    }
+  };
+}
+
+export function decreaseQty(user, OrderProduct) {
+  return async (dispatch) => {
+    try {
+      // check if qty is > 0
+      // some logic to decrement
+      const { data } = await axios.put(`/api/orders/cart`);
+      dispatch(_subtractQty(data));
+    } catch (err) {
+      console.error(err);
+    }
+  };
+}
+
 // REDUCER
 const cartReducer = (state = cartState, action) => {
   switch (action.type) {
@@ -79,17 +134,40 @@ const cartReducer = (state = cartState, action) => {
         return state;
       return { cart: [...state.cart, action.orderProduct] };
 
-    case UPDATE_CART:
+    // case UPDATE_CART:
+    //   return {
+    //     ...state,
+    //     //   cart: state.cart.map(item => item.id === action.productId.id ? {...item })
+    //   };
+
+    case ADD_QTY:
       return {
         ...state,
-        //   cart: state.cart.map(item => item.id === action.productId.id ? {...item })
+        cart: state.cart.map((product) =>
+          product.id === action.id
+            ? { ...product, qty: product.numItems + 1 }
+            : product
+        ),
+      };
+
+    case SUB_QTY:
+      return {
+        ...state,
+        cart: state.cart.map((product) =>
+          product.id === action.id
+            ? {
+                ...product,
+                quantity: product.numItems > 2 ? product.numItems - 1 : 1,
+              }
+            : product
+        ),
       };
 
     case REMOVE_FROM_CART:
       return {
         ...state,
         cart: state.cart.filter((item) => {
-          item.id !== action.productId.id;
+          return item.id !== action.id;
         }),
       };
 

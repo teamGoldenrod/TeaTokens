@@ -109,4 +109,10 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, { getCart })(Cart);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getCart: () => dispatch(getCart()),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Cart);
