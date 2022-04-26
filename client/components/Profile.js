@@ -42,6 +42,7 @@ class Profile extends React.Component {
               <Fr key={el.id}>
                 <Gi gridColumn="1 / -1">
                   <Text fontSize="3xl">Order ID: {el.id}</Text>
+                  <Text fontSize="3xl">Total Amount Paid: ${el.subTotal}</Text>
                 </Gi>
                 {!!el.products.length &&
                   el.products.map((prod) => (

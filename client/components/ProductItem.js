@@ -26,7 +26,7 @@ function ProductItem({ product, auth, deleteProduct, view = false }) {
         <Image src={product.imageUrl} alt="tea image" />
         <Heading color="tea.matcha">{product.name}</Heading>
 
-        <Text fontSize="lg">${product.price}</Text>
+        {!view && <Text fontSize="lg">${product.price}</Text>}
       </VStack>
 
       {!view && (
