@@ -4,7 +4,6 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const Order = require("./Order");
 const Product = require("./Product");
-const axios = require("axios");
 
 const SALT_ROUNDS = 5;
 

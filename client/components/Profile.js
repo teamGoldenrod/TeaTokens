@@ -5,7 +5,7 @@ import {update, getUserCartInfo} from '../store/user'
 /**
  * COMPONENT
  */
-class UserHome extends React.Component {
+class Profile extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -144,4 +144,4 @@ const mapDispatch = dispatch => {
     getUserCartInfo: user => dispatch(getUserCartInfo(user))
   }
 }
-export default connect(mapState, mapDispatch)(UserHome)
+export default connect(mapState, mapDispatch)(Profile)

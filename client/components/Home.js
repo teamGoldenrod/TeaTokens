@@ -58,7 +58,7 @@ export class Home extends React.Component {
               Featured
             </Heading>
           </Gi>
-          {this.props.products.length &&
+          {!!this.props.products.length &&
             this.randomizeFeaturedProducts().map((product) => {
               return <ProductItem key={product.id} product={product} />;
             })}

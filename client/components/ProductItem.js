@@ -1,14 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import {
-  GridItem as Gi,
-  VStack,
-  Image,
-  Heading,
-  Text,
-  Box,
-} from "@chakra-ui/react";
-import { buttonStyle } from "../styles";
+import { GridItem as Gi, VStack, Image, Heading, Text } from "@chakra-ui/react";
+
+import ProductToCartBtn from "./ProductToCartBtn";
+
 export default function ProductItem({ product }) {
   return (
     <Gi>
@@ -22,9 +17,7 @@ export default function ProductItem({ product }) {
         <Heading color="tea.matcha">{product.name}</Heading>
         <Text fontSize="lg">${product.price}</Text>
       </VStack>
-      <Box as="button" {...buttonStyle("outline")} marginTop="2">
-        Add To Cart
-      </Box>
+      <ProductToCartBtn marginTop="2" product={product} btnStyle="outline" />
     </Gi>
   );
 }
