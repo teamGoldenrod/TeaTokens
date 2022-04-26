@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { getProduct } from "../store/product";
-
+import { Link } from "react-router-dom";
 import ProductToCartBtn from "./ProductToCartBtn";
 import {
   Grid,
@@ -9,7 +9,8 @@ import {
   Image,
   Heading,
   Text,
-  Box,
+  HStack,
+  Button,
 } from "@chakra-ui/react";
 
 const SingleProduct = (props) => {
@@ -34,14 +35,27 @@ const SingleProduct = (props) => {
           {product.description}
         </Text>
         <Text fontSize="4xl">${product.price}</Text>
-        <ProductToCartBtn
-          py="0.6rem"
-          px="1rem"
-          justifySelf="start"
-          alignSelf="start"
-          fontSize="xl"
-          product={product}
-        />
+        <HStack spacing={3}>
+          <ProductToCartBtn
+            py="0.6rem"
+            px="1rem"
+            justifySelf="start"
+            alignSelf="start"
+            fontSize="xl"
+            product={product}
+          />
+          {props.auth.id && props.auth.role === "admin" && (
+            <Button
+              colorScheme="cyan"
+              height="100%"
+              fontSize="lg"
+              as={Link}
+              to={`/products/edit/${product.id}`}
+            >
+              Edit Product
+            </Button>
+          )}
+        </HStack>
       </Gi>
     </Grid>
   );
@@ -50,6 +64,7 @@ const SingleProduct = (props) => {
 const mapStateToProps = (state) => {
   return {
     product: state.product.singleProduct,
+    auth: state.auth,
   };
 };
 

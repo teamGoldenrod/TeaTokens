@@ -46,7 +46,7 @@ router.post("/", async (req, res, next) => {
 //PUT -> needs to be admin
 router.put("/:id", async (req, res, next) => {
   try {
-    const editProduct = await Product.update(req.body, {
+    const [_, [editProduct]] = await Product.update(req.body, {
       where: { id: req.params.id },
       returning: true,
     });

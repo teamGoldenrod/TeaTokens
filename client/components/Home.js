@@ -59,7 +59,13 @@ export class Home extends React.Component {
           </Gi>
           {!!this.props.products.length &&
             this.randomizeFeaturedProducts().map((product) => {
-              return <ProductItem key={product.id} product={product} />;
+              return (
+                <ProductItem
+                  key={product.id}
+                  product={product}
+                  auth={this.props.user}
+                />
+              );
             })}
         </MyGrid>
       </Fr>

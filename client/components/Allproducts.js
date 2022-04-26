@@ -1,17 +1,22 @@
 import React from "react";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 import { getProducts } from "../store/product";
 // import {Link} from '.'
 import MyGrid from "./ui/MyGrid";
 import ProductItem from "./ProductItem";
+
 import {
   GridItem as Gi,
   Heading,
   Input,
   HStack,
   Spacer,
+  Button,
+  Box,
+  Text,
 } from "@chakra-ui/react";
-import { inputStyle } from "../styles";
+import { inputStyle, buttonStyle } from "../styles";
 
 export class AllProducts extends React.Component {
   constructor() {
@@ -22,7 +27,7 @@ export class AllProducts extends React.Component {
     this.handleSearch = this.handleSearch.bind(this);
   }
   componentDidMount() {
-    if (!this.props.products.length) this.props.getProducts();
+    this.props.getProducts();
   }
   handleSearch(e) {
     this.setState({ search: e.target.value });
@@ -34,7 +39,7 @@ export class AllProducts extends React.Component {
           <Heading color="tea.green" textTransform="uppercase">
             Enjoy
           </Heading>
-          <Spacer />
+
           <Input
             name="search"
             type="text"
@@ -43,6 +48,13 @@ export class AllProducts extends React.Component {
             onChange={this.handleSearch}
             value={this.state.search}
           />
+          {this.props.auth.id && this.props.auth.role === "admin" && (
+            <Box as="button" {...buttonStyle()}>
+              <Link to="/products/create">
+                <Text>Create Product</Text>
+              </Link>
+            </Box>
+          )}
         </Gi>
         {this.props.products
           .filter((product) => {
@@ -52,7 +64,13 @@ export class AllProducts extends React.Component {
               .includes(this.state.search.toLowerCase().trim());
           })
           .map((product) => {
-            return <ProductItem key={product.id} product={product} />;
+            return (
+              <ProductItem
+                key={product.id}
+                product={product}
+                auth={this.props.auth}
+              />
+            );
           })}
       </MyGrid>
     );
@@ -65,6 +83,7 @@ export class AllProducts extends React.Component {
 const mapStateToProps = (state) => {
   return {
     products: state.product.allProducts,
+    auth: state.auth,
   };
 };
 
