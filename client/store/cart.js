@@ -9,8 +9,8 @@ const cartState = {
 // ACTION TYPES
 const GOT_CART = "GOT_CART";
 const ADD_TO_CART = "ADD_TO_CART";
-
-const UPDATE_CART = "UPDATE_CART";
+const INCREASE_QTY = "INCREASE_QTY";
+const DECREASE_QTY = "DECREASE_QTY";
 const REMOVE_FROM_CART = "REMOVE_FROM_CART";
 const CLEAR_CART = "CLEAR_CART";
 const SET_ORDER_ID = "SET_ORDER_ID";
@@ -27,15 +27,21 @@ export const _addToCart = (orderProduct) => ({
 });
 
 // adjust quantity
-export const _updateCart = (productId, qty) => ({
-  type: UPDATE_CART,
-  productId,
-  qty,
+export const _decreaseQty = (id, numItems) => ({
+  type: DECREASE_QTY,
+  id,
+  numItems,
+});
+export const _increaseQty = (id, numItems, totalPrice) => ({
+  type: INCREASE_QTY,
+  id,
+  numItems,
+  totalPrice,
 });
 
-export const _removeFromCart = (productId) => ({
+export const _removeFromCart = (id) => ({
   type: REMOVE_FROM_CART,
-  productId,
+  id,
 });
 
 export const _clearCart = () => ({
@@ -65,6 +71,73 @@ export function getCart() {
     }
   };
 }
+// currently cannot remove as guest
+export function removeFromCart(id) {
+  return async (dispatch) => {
+    try {
+      const token = localStorage.getItem("token");
+      let data;
+      if (!token) {
+        throw new Error("no token");
+      } else {
+        const { data: dataFetched } = await axios.delete(
+          `/api/orders/cart/${id}`,
+          {
+            headers: { authorization: token },
+          }
+        );
+        data = dataFetched;
+      }
+      dispatch(_removeFromCart(id));
+    } catch (err) {
+      console.error(err);
+    }
+  };
+}
+
+export function increaseQty(id, numItems, totalPrice) {
+  return async (dispatch) => {
+    try {
+      const token = localStorage.getItem("token");
+      let data;
+      if (!token) {
+        throw new Error("no token");
+      } else {
+        const { data: dataFetched } = await axios.put(
+          `/api/orders/cart/${id}`,
+          { numItems, totalPrice },
+          { headers: { authorization: token } }
+        );
+        data = dataFetched;
+      }
+      dispatch(_increaseQty(id));
+    } catch (err) {
+      console.error(err);
+    }
+  };
+}
+
+export function decreaseQty(id, numItems, totalPrice) {
+  return async (dispatch) => {
+    try {
+      const token = localStorage.getItem("token");
+      let data;
+      if (!token) {
+        throw new Error("no token");
+      } else {
+        const { data: dataFetched } = await axios.put(
+          `/api/orders/cart/${id}`,
+          { numItems, totalPrice },
+          { headers: { authorization: token } }
+        );
+        data = dataFetched;
+      }
+      dispatch(_decreaseQty(id));
+    } catch (err) {
+      console.error(err);
+    }
+  };
+}
 
 // REDUCER
 const cartReducer = (state = cartState, action) => {
@@ -79,17 +152,54 @@ const cartReducer = (state = cartState, action) => {
         return state;
       return { cart: [...state.cart, action.orderProduct] };
 
-    case UPDATE_CART:
+    // case UPDATE_CART:
+    //   return {
+    //     ...state,
+    //     //   cart: state.cart.map(item => item.id === action.productId.id ? {...item })
+    //   };
+
+    case INCREASE_QTY:
       return {
         ...state,
-        //   cart: state.cart.map(item => item.id === action.productId.id ? {...item })
+        cart: state.cart.map((product) =>
+          product.id === action.id
+            ? {
+                ...product,
+                numItems: product.numItems + 1,
+
+                totalPrice: +(
+                  Math.round(
+                    (product.numItems + 1) * product.product.price * 1e12
+                  ) / 1e12
+                ).toFixed(2),
+              }
+            : product
+        ),
+      };
+
+    case DECREASE_QTY:
+      return {
+        ...state,
+        cart: state.cart.map((product) =>
+          product.id === action.id
+            ? {
+                ...product,
+                numItems: product.numItems - 1,
+                totalPrice: +(
+                  Math.round(
+                    (product.numItems - 1) * product.product.price * 1e12
+                  ) / 1e12
+                ).toFixed(2),
+              }
+            : product
+        ),
       };
 
     case REMOVE_FROM_CART:
       return {
         ...state,
         cart: state.cart.filter((item) => {
-          item.id !== action.productId.id;
+          return item.id !== action.id;
         }),
       };
 

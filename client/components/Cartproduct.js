@@ -1,5 +1,7 @@
 import React, { Fragment as Fr } from "react";
 import { Link } from "react-router-dom";
+import { removeFromCart, decreaseQty, increaseQty } from "../store/cart";
+import { connect } from "react-redux";
 import {
   HStack,
   GridItem as Gi,
@@ -8,7 +10,22 @@ import {
   Button,
   Image,
 } from "@chakra-ui/react";
-const Cartproduct = ({ el }) => {
+const Cartproduct = (props) => {
+  const { el } = props;
+  const handleDelete = async () => {
+    await props.removefromCart(el.id);
+  };
+
+  const handleDecrease = async () => {
+    let totalPrice = el.product.price * (el.numItems - 1);
+    await props.decreaseQty(el.id, el.numItems - 1, totalPrice);
+  };
+
+  const handleIncrease = async () => {
+    let totalPrice = el.product.price * (el.numItems + 1);
+    await props.increaseQty(el.id, el.numItems + 1, totalPrice);
+  };
+
   return (
     <Fr>
       <Gi as={HStack}>
@@ -25,18 +42,18 @@ const Cartproduct = ({ el }) => {
           <Button colorScheme="green" size="xs" mr="2">
             <Link to={`/products/${el.productId}`}>View</Link>
           </Button>
-          <Button colorScheme="red" size="xs">
+          <Button colorScheme="red" size="xs" onClick={handleDelete}>
             Remove
           </Button>
         </Box>
       </Gi>
       <Gi>${el.product.price}</Gi>
       <Gi>
-        <Button size="sm" borderRadius="full" mr="1">
+        <Button size="sm" borderRadius="full" mr="1" onClick={handleDecrease}>
           -
         </Button>
         {el.numItems}
-        <Button size="sm" borderRadius="full" ml="1">
+        <Button size="sm" borderRadius="full" ml="1" onClick={handleIncrease}>
           +
         </Button>
       </Gi>
@@ -52,4 +69,12 @@ const Cartproduct = ({ el }) => {
   );
 };
 
-export default Cartproduct;
+const mapDispatchToProps = (dispatch) => ({
+  removefromCart: (id) => dispatch(removeFromCart(id)),
+  increaseQty: (id, numItems, totalPrice) =>
+    dispatch(increaseQty(id, numItems, totalPrice)),
+  decreaseQty: (id, numItems, totalPrice) =>
+    dispatch(decreaseQty(id, numItems, totalPrice)),
+});
+
+export default connect(null, mapDispatchToProps)(Cartproduct);
