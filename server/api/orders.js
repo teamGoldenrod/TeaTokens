@@ -69,7 +69,7 @@ router.get("/cart", async (req, res, next) => {
 router.put("/:id", async (req, res, next) => {
   try {
     const [_, boughtOrder] = await Order.update(
-      { isCart: false },
+      { isCart: false, subTotal: req.body.subTotal },
       { where: { id: req.params.id, userId: req.user.id }, returning: true }
     );
     res.status(200).json(boughtOrder);

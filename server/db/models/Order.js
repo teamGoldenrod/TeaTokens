@@ -6,6 +6,12 @@ const Order = db.define("order", {
     type: Sequelize.BOOLEAN,
     defaultValue: true,
   },
+  subTotal: {
+    type: Sequelize.FLOAT,
+    validate: {
+      min: 0.01,
+    },
+  },
 });
 
 module.exports = Order;
