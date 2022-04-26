@@ -11,7 +11,9 @@ import Singleproduct from "./components/Singleproduct";
 
 import Home from "./components/Home";
 import { me } from "./store";
+
 import Profile from "./components/Profile";
+
 
 /**
  * COMPONENT
@@ -37,7 +39,9 @@ class Routes extends Component {
           <Route exact path="/products" component={Allproducts} />
           <Route exact path="/products/:productId" component={Singleproduct} />
           <Route exact path="/cart" component={Cart} />
+
           <Route exact path="/users/:userId" component={Profile} />
+
           <Route path="*">
             <Redirect to="/home" />
           </Route>

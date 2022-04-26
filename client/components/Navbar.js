@@ -19,7 +19,6 @@ import {
 } from "@chakra-ui/react";
 
 const Navbar = ({ handleClick, isLoggedIn, user }) => {
-  console.log(user);
   return (
     <Box>
       <Container maxW="container.xl">

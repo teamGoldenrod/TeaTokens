@@ -1,5 +1,6 @@
 import axios from "axios";
 import history from "../history";
+import { getLocalCart, clearLocalCart, addToCart } from "../helper";
 
 const TOKEN = "token";
 
@@ -33,6 +34,19 @@ export const authenticate = (userInfo) => async (dispatch) => {
   try {
     const res = await axios.post(`/auth/${userInfo.formName}`, { ...userInfo });
     window.localStorage.setItem(TOKEN, res.data.token);
+    if (userInfo.formName === "signup") {
+      const localCart = getLocalCart();
+      const isLocalCart = Array.isArray(localCart) && localCart.length;
+      if (isLocalCart) {
+        await Promise.all(
+          localCart.map((el) =>
+            addToCart(el.productId, el.numItems, res.data.id)
+          )
+        );
+      }
+      clearLocalCart();
+    }
+
     dispatch(me());
   } catch (authError) {
     return dispatch(setAuth({ error: authError }));

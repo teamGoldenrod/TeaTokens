@@ -1,4 +1,5 @@
 import axios from "axios";
+import { getLocalCart } from "../helper";
 // import {me} from './user'
 
 const cartState = {
@@ -48,9 +49,9 @@ export function getCart() {
       const token = localStorage.getItem("token");
       let data;
       if (!token) {
-        const cartLocal = JSON.parse(localStorage.getItem("cart"));
+        const cartLocal = getLocalCart();
         data = Array.isArray(cartLocal)
-          ? [...cartLocal, ...getState().cart.cart]
+          ? [...cartLocal]
           : [...getState().cart.cart];
       } else {
         const { data: dataFetched } = await axios.get(`/api/orders/cart`, {
