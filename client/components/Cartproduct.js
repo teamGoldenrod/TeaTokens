@@ -11,19 +11,20 @@ import {
   Image,
 } from "@chakra-ui/react";
 const Cartproduct = (props) => {
-  const { el } = props;
+  const { el, localId } = props;
+  if (!el.id) el.localId = localId;
   const handleDelete = async () => {
-    await props.removefromCart(el.id);
+    await props.removefromCart(el.id || el.localId);
   };
 
   const handleDecrease = async () => {
     let totalPrice = el.product.price * (el.numItems - 1);
-    await props.decreaseQty(el.id, el.numItems - 1, totalPrice);
+    await props.decreaseQty(el.id || el.localId, el.numItems - 1, totalPrice);
   };
 
   const handleIncrease = async () => {
     let totalPrice = el.product.price * (el.numItems + 1);
-    await props.increaseQty(el.id, el.numItems + 1, totalPrice);
+    await props.increaseQty(el.id || el.localId, el.numItems + 1, totalPrice);
   };
 
   return (
@@ -49,7 +50,13 @@ const Cartproduct = (props) => {
       </Gi>
       <Gi>${el.product.price}</Gi>
       <Gi>
-        <Button size="sm" borderRadius="full" mr="1" onClick={handleDecrease}>
+        <Button
+          size="sm"
+          borderRadius="full"
+          mr="1"
+          onClick={handleDecrease}
+          disabled={el.numItems === 1}
+        >
           -
         </Button>
         {el.numItems}
