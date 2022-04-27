@@ -29,7 +29,7 @@ export const me = () => async (dispatch) => {
   }
 };
 
-// persistent token for log in
+// persistent token
 export const authenticate = (userInfo) => async (dispatch) => {
   try {
     const res = await axios.post(`/auth/${userInfo.formName}`, { ...userInfo });
