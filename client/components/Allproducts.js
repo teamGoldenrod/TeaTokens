@@ -2,7 +2,6 @@ import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { getProducts } from "../store/product";
-// import {Link} from '.'
 import MyGrid from "./ui/MyGrid";
 import ProductItem from "./ProductItem";
 
@@ -11,8 +10,6 @@ import {
   Heading,
   Input,
   HStack,
-  Spacer,
-  Button,
   Box,
   Text,
 } from "@chakra-ui/react";

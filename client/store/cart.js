@@ -1,7 +1,6 @@
 import axios from "axios";
 import { getLocalCart, storeLocalCart } from "../helper";
 import history from "../history";
-// import {me} from './user'
 
 const cartState = {
   cart: [], // {id, title, descr, price, img, qty}

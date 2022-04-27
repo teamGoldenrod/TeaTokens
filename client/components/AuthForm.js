@@ -1,12 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import { inputStyle, buttonStyle } from "../styles";
 import { connect } from "react-redux";
 import { authenticate } from "../store";
-import { getLocalCart, clearLocalCart, addToCart } from "../helper";
+
 import {
   VStack,
   Input,
-  Button,
   Alert,
   AlertDescription,
   AlertIcon,

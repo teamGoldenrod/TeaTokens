@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter, Route, Switch, Redirect } from "react-router-dom";
 import Cart from "./components/Cart";
@@ -13,7 +13,7 @@ import { me } from "./store";
 
 import Profile from "./components/Profile";
 import CreateEditProductForm from "./components/CreateEditProductForm";
-import Confirmation from "./components/Confirmation";
+
 /**
  * COMPONENT
  */
@@ -34,7 +34,6 @@ class Routes extends Component {
             {!isLoggedIn ? <AuthPage /> : <Redirect to="/home" />}
           </Route>
 
-          {/* <Route path="/cart" component={Cart} /> */}
           <Route exact path="/products" component={Allproducts} />
           <Route
             exact

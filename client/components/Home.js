@@ -1,5 +1,4 @@
 import React, { Fragment as Fr } from "react";
-import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { getProducts } from "../store/product";
 import MyGrid from "./ui/MyGrid";
