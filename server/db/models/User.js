@@ -83,7 +83,10 @@ User.findByToken = async function (token) {
     const { id } = await jwt.verify(token, process.env.JWT);
     const user = await User.findByPk(id, {
       attributes: ["id", "username", "email", "imageUrl", "role"],
-      include: [{ model: Order, include: Product }, { model: OrderProduct }],
+      include: [
+        { model: Order, include: Product },
+        { model: OrderProduct, include: Product },
+      ],
     });
     if (!user) {
       throw "nooo";

@@ -38,11 +38,13 @@ export const authenticate = (userInfo) => async (dispatch) => {
       const localCart = getLocalCart();
       const isLocalCart = Array.isArray(localCart) && localCart.length;
       if (isLocalCart) {
-        await Promise.all(
-          localCart.map((el) =>
-            addToCart(el.productId, el.numItems, res.data.id)
-          )
-        );
+        for (let i = 0; i < localCart.length; i++) {
+          await addToCart(
+            localCart[i].productId,
+            localCart[i].numItems,
+            res.data.id
+          );
+        }
       }
       clearLocalCart();
     }
