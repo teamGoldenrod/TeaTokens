@@ -145,7 +145,7 @@ export function purchaseOrder(id, subTotal) {
         );
       }
       dispatch(_purchaseOrder());
-      history.push("/home");
+      history.push("/profile");
     } catch (err) {
       console.error(err);
     }
