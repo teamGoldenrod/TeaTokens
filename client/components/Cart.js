@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import { buttonStyle } from "../styles";
 import history from "../history";
 import { AiOutlineArrowLeft } from "react-icons/ai";
-import { getCart } from "../store/cart";
+import { getCart, purchaseOrder } from "../store/cart";
 import {
   Heading,
   Grid,
@@ -112,6 +112,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     getCart: () => dispatch(getCart()),
+    purchaseOrder: (id, subTotal) => dispatch(purchaseOrder(id, subTotal)),
   };
 };
 

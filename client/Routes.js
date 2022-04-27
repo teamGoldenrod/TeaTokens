@@ -2,6 +2,7 @@ import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import { withRouter, Route, Switch, Redirect } from "react-router-dom";
 import Cart from "./components/Cart";
+import Checkout from "./components/Checkout";
 
 import AuthPage from "./components/AuthPage";
 
@@ -49,6 +50,7 @@ class Routes extends Component {
           <Route exact path="/cart" component={Cart} />
 
           <Route exact path="/profile" component={Profile} />
+          <Route exact path="/orders/:id" component={Checkout} />
 
           <Route path="*">
             <Redirect to="/home" />

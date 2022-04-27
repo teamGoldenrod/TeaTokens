@@ -13,7 +13,7 @@ const INCREASE_QTY = "INCREASE_QTY";
 const DECREASE_QTY = "DECREASE_QTY";
 const REMOVE_FROM_CART = "REMOVE_FROM_CART";
 const CLEAR_CART = "CLEAR_CART";
-const SET_ORDER_ID = "SET_ORDER_ID";
+const PURCHASE_ORDER = "PURCHASE_ORDER";
 
 // ACTION CREATORS
 export const _gotCart = (cart) => ({
@@ -46,6 +46,10 @@ export const _removeFromCart = (id) => ({
 
 export const _clearCart = () => ({
   type: CLEAR_CART,
+});
+
+export const _purchaseOrder = () => ({
+  type: PURCHASE_ORDER,
 });
 
 // THUNK CREATORS
@@ -126,6 +130,26 @@ export function decreaseQty(id, numItems, totalPrice) {
   };
 }
 
+export function purchaseOrder(id, subTotal) {
+  return async (dispatch) => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        throw new Error("no token");
+      } else {
+        await axios.put(
+          `/api/orders/${id}`,
+          { subTotal },
+          { headers: { authorization: token } }
+        );
+      }
+      dispatch(_purchaseOrder());
+    } catch (err) {
+      console.error(err);
+    }
+  };
+}
+
 // REDUCER
 const cartReducer = (state = cartState, action) => {
   switch (action.type) {
@@ -198,10 +222,9 @@ const cartReducer = (state = cartState, action) => {
       };
 
     case CLEAR_CART:
+    case PURCHASE_ORDER:
       return { cart: [] };
 
-    case SET_ORDER_ID:
-      return {};
     default:
       return state;
   }
