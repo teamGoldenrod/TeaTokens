@@ -1,5 +1,5 @@
 import axios from "axios";
-import { getLocalCart } from "../helper";
+import { getLocalCart, storeLocalCart } from "../helper";
 // import {me} from './user'
 
 const cartState = {
@@ -76,17 +76,10 @@ export function removeFromCart(id) {
   return async (dispatch) => {
     try {
       const token = localStorage.getItem("token");
-      let data;
-      if (!token) {
-        throw new Error("no token");
-      } else {
-        const { data: dataFetched } = await axios.delete(
-          `/api/orders/cart/${id}`,
-          {
-            headers: { authorization: token },
-          }
-        );
-        data = dataFetched;
+      if (token) {
+        await axios.delete(`/api/orders/cart/${id}`, {
+          headers: { authorization: token },
+        });
       }
       dispatch(_removeFromCart(id));
     } catch (err) {
@@ -99,16 +92,13 @@ export function increaseQty(id, numItems, totalPrice) {
   return async (dispatch) => {
     try {
       const token = localStorage.getItem("token");
-      let data;
-      if (!token) {
-        throw new Error("no token");
-      } else {
-        const { data: dataFetched } = await axios.put(
+
+      if (token) {
+        await axios.put(
           `/api/orders/cart/${id}`,
           { numItems, totalPrice },
           { headers: { authorization: token } }
         );
-        data = dataFetched;
       }
       dispatch(_increaseQty(id));
     } catch (err) {
@@ -121,16 +111,13 @@ export function decreaseQty(id, numItems, totalPrice) {
   return async (dispatch) => {
     try {
       const token = localStorage.getItem("token");
-      let data;
-      if (!token) {
-        throw new Error("no token");
-      } else {
-        const { data: dataFetched } = await axios.put(
+
+      if (token) {
+        await axios.put(
           `/api/orders/cart/${id}`,
           { numItems, totalPrice },
           { headers: { authorization: token } }
         );
-        data = dataFetched;
       }
       dispatch(_decreaseQty(id));
     } catch (err) {
@@ -159,10 +146,11 @@ const cartReducer = (state = cartState, action) => {
     //   };
 
     case INCREASE_QTY:
-      return {
+      const newInState = {
         ...state,
-        cart: state.cart.map((product) =>
-          product.id === action.id
+        cart: state.cart.map((product) => {
+          const id = product.id || product.localId;
+          return id === action.id
             ? {
                 ...product,
                 numItems: product.numItems + 1,
@@ -173,32 +161,38 @@ const cartReducer = (state = cartState, action) => {
                   ) / 1e12
                 ).toFixed(2),
               }
-            : product
-        ),
+            : product;
+        }),
       };
+      if (!newInState.cart[0].id) storeLocalCart(newInState.cart);
+      return newInState;
 
     case DECREASE_QTY:
-      return {
+      const newDeState = {
         ...state,
-        cart: state.cart.map((product) =>
-          product.id === action.id
+        cart: state.cart.map((product) => {
+          const id = product.id || product.localId;
+          return id === action.id
             ? {
                 ...product,
                 numItems: product.numItems - 1,
+
                 totalPrice: +(
                   Math.round(
                     (product.numItems - 1) * product.product.price * 1e12
                   ) / 1e12
                 ).toFixed(2),
               }
-            : product
-        ),
+            : product;
+        }),
       };
-
+      if (!newDeState.cart[0].id) storeLocalCart(newDeState.cart);
+      return newDeState;
     case REMOVE_FROM_CART:
       return {
         ...state,
         cart: state.cart.filter((item) => {
+          if (!item.id) return item.localId !== action.id;
           return item.id !== action.id;
         }),
       };

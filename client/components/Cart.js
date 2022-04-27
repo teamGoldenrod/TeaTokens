@@ -78,8 +78,8 @@ class Cart extends React.Component {
                 width="100%"
               ></Gi>
 
-              {this.props.cart.map((el) => (
-                <Cartproduct key={el.productId} el={el} />
+              {this.props.cart.map((el, i) => (
+                <Cartproduct key={el.productId} el={el} localId={i + 1} />
               ))}
               <Gi gridColumn="1 / span 3">Subtotal:</Gi>
               <Gi fontWeight="bold">${this.getSubTotal()}</Gi>
