@@ -23,7 +23,7 @@ class Profile extends React.Component {
     const previousOrders =
       Array.isArray(profile.orders) &&
       profile.orders.filter((el) => !el.isCart);
-    console.log(previousOrders);
+
     return (
       <Fr>
         <Center>

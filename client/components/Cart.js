@@ -38,7 +38,7 @@ const Cart = (props) => {
     props.purchaseOrder(props.cart[0].orderId, getSubTotal());
     onClose();
   };
-  console.log(props);
+
   return (
     <Fr>
       <CheckoutAlert
