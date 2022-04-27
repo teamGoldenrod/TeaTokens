@@ -48,7 +48,7 @@ class Profile extends React.Component {
                     .map((el) => (
                       <Fr key={el.id}>
                         <Text fontSize="xl">
-                          ${el.totalPrice}: {el.product.name} x{el.numItems}
+                          {el.product.name} x{el.numItems}: ${el.totalPrice}
                         </Text>
                       </Fr>
                     ))}
