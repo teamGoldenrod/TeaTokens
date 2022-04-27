@@ -19,19 +19,12 @@ router.post("/login", async (req, res, next) => {
 
 router.post("/signup", async (req, res, next) => {
   try {
-    const {
-      username,
-      password,
-      passwordConfirm,
-      email,
-      role = "customer",
-    } = req.body;
+    const { username, password, passwordConfirm, email } = req.body;
     const user = await User.create({
       username,
       password,
       email,
       passwordConfirm,
-      role,
     });
 
     res.send({ token: await user.generateToken(), id: user.id });
