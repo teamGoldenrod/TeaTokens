@@ -3,7 +3,7 @@ import { Login, Signup } from "./AuthForm";
 import { Center, Text, VStack } from "@chakra-ui/react";
 
 export default function AuthPage() {
-  const [isSignUp, setIsSignUp] = useState(false);
+  const [isSignUp, setIsSignUp] = useState(true);
   return (
     <Center py={8} as={VStack}>
       {isSignUp ? <Signup /> : <Login />}
