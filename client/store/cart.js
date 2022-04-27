@@ -164,12 +164,6 @@ const cartReducer = (state = cartState, action) => {
         return state;
       return { cart: [...state.cart, action.orderProduct] };
 
-    // case UPDATE_CART:
-    //   return {
-    //     ...state,
-    //     //   cart: state.cart.map(item => item.id === action.productId.id ? {...item })
-    //   };
-
     case INCREASE_QTY:
       const newInState = {
         ...state,
