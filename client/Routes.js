@@ -14,6 +14,7 @@ import { me } from "./store";
 
 import Profile from "./components/Profile";
 import CreateEditProductForm from "./components/CreateEditProductForm";
+import Confirmation from "./components/Confirmation";
 /**
  * COMPONENT
  */
@@ -50,7 +51,6 @@ class Routes extends Component {
           <Route exact path="/cart" component={Cart} />
 
           <Route exact path="/profile" component={Profile} />
-          <Route exact path="/orders/:id" component={Checkout} />
 
           <Route path="*">
             <Redirect to="/home" />

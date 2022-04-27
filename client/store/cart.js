@@ -1,5 +1,6 @@
 import axios from "axios";
 import { getLocalCart, storeLocalCart } from "../helper";
+import history from "../history";
 // import {me} from './user'
 
 const cartState = {
@@ -144,6 +145,7 @@ export function purchaseOrder(id, subTotal) {
         );
       }
       dispatch(_purchaseOrder());
+      history.push("/home");
     } catch (err) {
       console.error(err);
     }
