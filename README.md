@@ -6,7 +6,7 @@ Deployed: http://teatokens.herokuapp.com/
 
 ## Description
 
-An e-commerce website with an extensive tea product catalog, shopping cart, and checkout. My team and I built this full-stack single-page application using Node.js, React, React-Redux, Express, Sequelize, PostgreSQL, and Chakra-UI.
+An e-commerce website with an extensive tea product catalog, shopping cart, and checkout. Fullstack, single-page application built using Node.js, React, React-Redux, Express, Sequelize, PostgreSQL, and Chakra-UI.
 
 ## Features
 
